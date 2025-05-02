@@ -28,7 +28,6 @@ export default function Markers() {
         <Marker
           longitude={sourceCoordinates?.lng}
           latitude={sourceCoordinates?.lat}
-          anchor="bottom"
         >
           <div className="relative w-10 h-10">
             <Image
@@ -49,7 +48,6 @@ export default function Markers() {
         <Marker
           longitude={destinationCoordinates?.lng}
           latitude={destinationCoordinates?.lat}
-          anchor="bottom"
         >
           <div className="relative w-10 h-10">
             <Image
