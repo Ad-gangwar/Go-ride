@@ -2,7 +2,6 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 
 interface User {
@@ -28,7 +27,6 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
 
   useEffect(() => {
     // Check for stored user data on mount
@@ -50,7 +48,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(userData);
       localStorage.setItem('user', JSON.stringify(userData));
       toast.success('Login successful!');
-      router.push('/');
+      window.location.href = '/';
     } catch (error) {
       toast.error('Invalid credentials');
       throw error;
@@ -69,7 +67,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(userData);
       localStorage.setItem('user', JSON.stringify(userData));
       toast.success('Registration successful!');
-      router.push('/');
+      window.location.href = '/';
     } catch (error) {
       toast.error('Registration failed');
       throw error;
@@ -79,7 +77,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = () => {
     setUser(null);
     localStorage.removeItem('user');
-    router.push('/login');
+    window.location.href = '/login';
   };
 
   return (

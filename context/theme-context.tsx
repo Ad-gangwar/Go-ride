@@ -13,8 +13,10 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>('light');
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     // Check if user has saved theme preference
     const savedTheme = localStorage.getItem('theme') as Theme | null;
     
@@ -23,12 +25,11 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       const systemPreference = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       setTheme(systemPreference);
       localStorage.setItem('theme', systemPreference);
+      document.documentElement.classList.toggle('dark', systemPreference === 'dark');
     } else {
       setTheme(savedTheme);
+      document.documentElement.classList.toggle('dark', savedTheme === 'dark');
     }
-    
-    // Apply theme to document
-    document.documentElement.classList.toggle('dark', savedTheme === 'dark');
   }, []);
 
   const toggleTheme = () => {
@@ -37,6 +38,11 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     localStorage.setItem('theme', newTheme);
     document.documentElement.classList.toggle('dark', newTheme === 'dark');
   };
+
+  // Prevent flash of wrong theme
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>

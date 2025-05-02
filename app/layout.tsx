@@ -3,8 +3,14 @@ import { Outfit } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/auth-context";
 import { ThemeProvider } from "@/context/theme-context";
+import { DirectionsDataProvider } from "@/context/directions-data-context";
+import { SelectedCarAmountProvider } from "@/context/selected-car-amount-context";
+import { SourceCoordinatesProvider } from "@/context/source-coordinates-context";
+import { DestinationCoordinatesProvider } from "@/context/destination-coordinates-context";
+import { GoogleMapsProvider } from "@/context/google-maps-context";
 import Navbar from "@/components/nav-bar";
 import { Toaster } from "react-hot-toast";
+import ErrorBoundary from "./error-boundary";
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -23,16 +29,28 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <AuthProvider>
-      <ThemeProvider>
-        <html lang="en" className="light">
-          <body className={`${outfit.className} dark:bg-gray-900 dark:text-white transition-colors`}>
-            <Toaster position="top-center" />
-            <Navbar />
-            {children}
-          </body>
-        </html>
-      </ThemeProvider>
-    </AuthProvider>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${outfit.className} bg-white text-gray-900 dark:bg-gray-900 dark:text-white transition-colors duration-300`}>
+        <ErrorBoundary>
+          <GoogleMapsProvider>
+            <AuthProvider>
+              <ThemeProvider>
+                <DirectionsDataProvider>
+                  <SelectedCarAmountProvider>
+                    <SourceCoordinatesProvider>
+                      <DestinationCoordinatesProvider>
+                        <Toaster position="top-center" />
+                        <Navbar />
+                        {children}
+                      </DestinationCoordinatesProvider>
+                    </SourceCoordinatesProvider>
+                  </SelectedCarAmountProvider>
+                </DirectionsDataProvider>
+              </ThemeProvider>
+            </AuthProvider>
+          </GoogleMapsProvider>
+        </ErrorBoundary>
+      </body>
+    </html>
   );
 }
