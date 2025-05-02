@@ -3,9 +3,8 @@
 import { DirectionsDataContext } from "@/context/directions-data-context";
 import { SelectedCarAmountContext } from "@/context/selected-car-amount-context";
 import CarsList from "@/data/CarsList";
-import { Loader2 } from "lucide-react";
 import Image from "next/image";
-import { useContext, useState, useEffect, useCallback, useMemo } from "react";
+import { useContext, useState, useCallback } from "react";
 
 // Define the Car type, ensuring consistency with CarsList
 interface Car {
@@ -18,15 +17,9 @@ interface Car {
 export default function Cars() {
   const [selectedCar, setSelectedCar] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
   const { directionsData } = useContext(DirectionsDataContext) ?? {};
   const { setCarAmount } = useContext(SelectedCarAmountContext) ?? {};
 
-  useEffect(() => {
-    if (directionsData) {
-      setIsLoading(false);
-    }
-  }, [directionsData]);
 
   const calculateCost = useCallback((charges: number) => {
     try {
@@ -53,21 +46,10 @@ export default function Cars() {
     }
   }, [calculateCost, setCarAmount]);
 
-  if (isLoading) {
-    return (
-      <div className="mt-3">
-        <h2 className="font-medium text-[14px]">Select Car</h2>
-        <div className="flex items-center justify-center p-4">
-          <Loader2 className="w-6 h-6 animate-spin text-yellow-500" />
-          <span className="ml-2 text-gray-600">Loading car options...</span>
-        </div>
-      </div>
-    );
-  }
 
   if (!directionsData) {
     return (
-      <div className="mt-3">
+      <div className="my-3">
         <h2 className="font-medium text-[14px]">Select Car</h2>
         <div className="p-4 bg-yellow-50 border border-yellow-200 rounded">
           <p className="text-yellow-700 text-sm">Please select source and destination points to view available cars.</p>
@@ -90,9 +72,8 @@ export default function Cars() {
             <button
               type="button"
               key={car.id}
-              className={`m-2 p-2 border-[1px] rounded-md hover:border-yellow-400 cursor-pointer transition-all duration-200 ${
-                car.id === selectedCar ? "border-yellow-400 border-[2px] bg-yellow-50" : ""
-              }`}
+              className={`m-2 p-2 border-[1px] rounded-md hover:border-yellow-400 cursor-pointer transition-all duration-200 ${car.id === selectedCar ? "border-yellow-400 border-[2px] bg-yellow-50" : ""
+                }`}
               onClick={() => handleCarSelect(car)}
             >
               <Image

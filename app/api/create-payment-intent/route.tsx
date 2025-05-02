@@ -1,8 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-
 import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+// Ensure the Stripe secret key is present and a string
+const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+
+if (!stripeSecretKey || typeof stripeSecretKey !== "string") {
+  throw new Error("STRIPE_SECRET_KEY is not set or is not a string.");
+}
+
+const stripe = new Stripe(stripeSecretKey, {
   apiVersion: "2025-02-24.acacia",
 });
 
@@ -10,7 +16,6 @@ export async function POST(request: NextRequest) {
   try {
     const { amount } = await request.json();
 
-    // Validate the amount
     if (typeof amount !== "number" || amount <= 0) {
       return NextResponse.json(
         { error: "Invalid amount provided." },
@@ -19,7 +24,7 @@ export async function POST(request: NextRequest) {
     }
 
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: amount,
+      amount,
       currency: "usd",
       automatic_payment_methods: { enabled: true },
     });
@@ -27,11 +32,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ clientSecret: paymentIntent.client_secret });
   } catch (error) {
     console.error("Internal Error:", error);
-    // Handle specific error types
     if (error instanceof Error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
-    // Handle other errors (e.g., network issues, parsing errors)
     return NextResponse.json(
       { error: `Internal Server Error: ${error}` },
       { status: 500 }
