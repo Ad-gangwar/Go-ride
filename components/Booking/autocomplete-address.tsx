@@ -1,11 +1,10 @@
 'use client';
 
-import { DestinationCoordinatesContext } from "@/context/destination-coordinates-context";
-import { SourceCoordinatesContext } from "@/context/source-coordinates-context";
-import { useContext, useState } from "react";
+import { useContext, useState, useCallback } from "react";
 import { Autocomplete } from "@react-google-maps/api";
 import { Loader2 } from "lucide-react";
 import { useGoogleMaps } from "@/context/google-maps-context";
+import { DirectionsDataContext } from "@/context/directions-data-context";
 
 export default function AutocompleteAddress() {
   const [source, setSource] = useState<string>("");
@@ -13,10 +12,19 @@ export default function AutocompleteAddress() {
   const [sourceAutocomplete, setSourceAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
   const [destinationAutocomplete, setDestinationAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isCalculatingDirections, setIsCalculatingDirections] = useState(false);
 
-  const { setSourceCoordinates } = useContext(SourceCoordinatesContext) ?? {};
-  const { setDestinationCoordinates } = useContext(DestinationCoordinatesContext) ?? {};
+  const { directionsData, setDirectionsData } = useContext(DirectionsDataContext) ?? {};
   const { isLoaded, loadError } = useGoogleMaps();
+
+  // Fill in the addresses from existing directions data
+  useState(() => {
+    if (directionsData?.routes?.[0]?.legs?.[0]) {
+      const leg = directionsData.routes[0].legs[0];
+      setSource(leg.start_address);
+      setDestination(leg.end_address);
+    }
+  });
 
   const onSourceLoad = (autocomplete: google.maps.places.Autocomplete) => {
     setSourceAutocomplete(autocomplete);
@@ -26,18 +34,97 @@ export default function AutocompleteAddress() {
     setDestinationAutocomplete(autocomplete);
   };
 
+  const calculateDirections = useCallback((sourceAddress: string, destinationAddress: string) => {
+    if (!isLoaded || isCalculatingDirections || !sourceAddress || !destinationAddress) return;
+
+    setIsCalculatingDirections(true);
+    
+    const geocoder = new google.maps.Geocoder();
+    
+    // First, geocode the addresses to get coordinates
+    Promise.all([
+      new Promise<{lat: number, lng: number} | null>((resolve) => {
+        geocoder.geocode({ address: sourceAddress }, (results, status) => {
+          if (status === 'OK' && results?.[0]?.geometry?.location) {
+            const location = results[0].geometry.location;
+            resolve({ lat: location.lat(), lng: location.lng() });
+          } else {
+            resolve(null);
+          }
+        });
+      }),
+      new Promise<{lat: number, lng: number} | null>((resolve) => {
+        geocoder.geocode({ address: destinationAddress }, (results, status) => {
+          if (status === 'OK' && results?.[0]?.geometry?.location) {
+            const location = results[0].geometry.location;
+            resolve({ lat: location.lat(), lng: location.lng() });
+          } else {
+            resolve(null);
+          }
+        });
+      })
+    ]).then(([sourceCoords, destCoords]) => {
+      if (!sourceCoords || !destCoords) {
+        setError('Could not find coordinates for the addresses. Please try different locations.');
+        setIsCalculatingDirections(false);
+        return;
+      }
+      
+      // Calculate directions
+      const directionsService = new google.maps.DirectionsService();
+      directionsService.route({
+        origin: sourceCoords,
+        destination: destCoords,
+        travelMode: google.maps.TravelMode.DRIVING,
+      }, (result, status) => {
+        if (status === 'OK' && result) {
+          const route = result.routes[0];
+          const leg = route.legs[0];
+          
+          // Convert distance from meters to kilometers and duration from seconds to minutes
+          const distanceInKm = (leg.distance?.value || 0) / 1000;
+          const durationInMinutes = (leg.duration?.value || 0) / 60;
+
+          setDirectionsData?.({
+            distance: distanceInKm,
+            duration: durationInMinutes,
+            routes: [{
+              distance: distanceInKm,
+              duration: durationInMinutes,
+              geometry: {
+                type: 'LineString',
+                coordinates: route.overview_path.map(point => [point.lng(), point.lat()])
+              },
+              legs: [{
+                start_address: leg.start_address,
+                end_address: leg.end_address
+              }]
+            }]
+          });
+          
+          setError(null);
+        } else {
+          setError('Could not calculate directions. Please try different locations.');
+          console.error('Directions request failed due to ' + status);
+        }
+        
+        setIsCalculatingDirections(false);
+      });
+    });
+  }, [isLoaded, setDirectionsData, isCalculatingDirections]);
+
   const onSourcePlaceChanged = () => {
     if (sourceAutocomplete) {
       try {
         const place = sourceAutocomplete.getPlace();
-        if (place.geometry?.location) {
-          const lat = place.geometry.location.lat();
-          const lng = place.geometry.location.lng();
-          setSource(place.formatted_address || '');
-          setSourceCoordinates?.({ lat, lng });
-          setError(null);
+        if (place.formatted_address) {
+          setSource(place.formatted_address);
+          
+          if (destination) {
+            calculateDirections(place.formatted_address, destination);
+          }
         } else {
-          setError('Please select a valid location');
+          setError('Please select a valid location from the dropdown');
         }
       } catch (error) {
         console.error('Error selecting source:', error);
@@ -50,14 +137,14 @@ export default function AutocompleteAddress() {
     if (destinationAutocomplete) {
       try {
         const place = destinationAutocomplete.getPlace();
-        if (place.geometry?.location) {
-          const lat = place.geometry.location.lat();
-          const lng = place.geometry.location.lng();
-          setDestination(place.formatted_address || '');
-          setDestinationCoordinates?.({ lat, lng });
-          setError(null);
+        if (place.formatted_address) {
+          setDestination(place.formatted_address);
+          
+          if (source) {
+            calculateDirections(source, place.formatted_address);
+          }
         } else {
-          setError('Please select a valid location');
+          setError('Please select a valid location from the dropdown');
         }
       } catch (error) {
         console.error('Error selecting destination:', error);
@@ -88,6 +175,12 @@ export default function AutocompleteAddress() {
       {error && (
         <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
           {error}
+        </div>
+      )}
+      {isCalculatingDirections && (
+        <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 text-yellow-800 rounded flex items-center">
+          <Loader2 className="w-4 h-4 animate-spin mr-2" />
+          <span>Calculating route...</span>
         </div>
       )}
       {/* Source Input */}

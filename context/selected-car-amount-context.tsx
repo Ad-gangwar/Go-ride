@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
 interface SelectedCarAmountContextType {
   carAmount: string | null;
@@ -13,7 +13,25 @@ export const SelectedCarAmountContext = createContext<SelectedCarAmountContextTy
 });
 
 export const SelectedCarAmountProvider = ({ children }: { children: ReactNode }) => {
-  const [carAmount, setCarAmount] = useState<string | null>(null);
+  // Initialize state from localStorage if available
+  const [carAmount, setCarAmount] = useState<string | null>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('selectedCarAmount');
+    }
+    return null;
+  });
+
+  // Update localStorage when carAmount changes
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      if (carAmount) {
+        localStorage.setItem('selectedCarAmount', carAmount);
+      } else {
+        localStorage.removeItem('selectedCarAmount');
+      }
+    }
+  }, [carAmount]);
+
 
   return (
     <SelectedCarAmountContext.Provider value={{ carAmount, setCarAmount }}>

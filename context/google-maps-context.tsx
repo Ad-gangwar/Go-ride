@@ -24,7 +24,7 @@ export const GoogleMapsProvider = ({ children }: { children: ReactNode }) => {
   });
 
   return (
-    <GoogleMapsContext.Provider value={{ isLoaded, loadError }}>
+    <GoogleMapsContext.Provider value={{ isLoaded, loadError: loadError || null }}>
       {children}
     </GoogleMapsContext.Provider>
   );

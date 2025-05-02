@@ -2,8 +2,6 @@
 
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { GoogleMap, Marker, DirectionsRenderer } from '@react-google-maps/api';
-import { SourceCoordinatesContext } from '@/context/source-coordinates-context';
-import { DestinationCoordinatesContext } from '@/context/destination-coordinates-context';
 import { DirectionsDataContext } from '@/context/directions-data-context';
 import { useGoogleMaps } from '@/context/google-maps-context';
 import DistanceTime from './distanceTime';
@@ -22,60 +20,131 @@ const defaultCenter = {
 
 export default function GoogleMapComponent() {
   const mapRef = useRef<google.maps.Map | null>(null);
-  const { sourceCoordinates } = useContext(SourceCoordinatesContext) ?? {};
-  const { destinationCoordinates } = useContext(DestinationCoordinatesContext) ?? {};
-  const { setDirectionsData } = useContext(DirectionsDataContext) ?? {};
+  const { directionsData, setDirectionsData } = useContext(DirectionsDataContext) ?? {};
   const { isLoaded, loadError } = useGoogleMaps();
   const [directions, setDirections] = useState<google.maps.DirectionsResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isMapReady, setIsMapReady] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
+  const [sourceCoords, setSourceCoords] = useState<{ lat: number; lng: number } | null>(null);
+  const [destCoords, setDestCoords] = useState<{ lat: number; lng: number } | null>(null);
+  const [isUpdatingDirections, setIsUpdatingDirections] = useState(false);
+  const [isUpdatingCoordinates, setIsUpdatingCoordinates] = useState(false);
 
-  const getDirections = useCallback(async () => {
-    if (!sourceCoordinates || !destinationCoordinates || !isMapReady) return;
+  // Function to get directions
+  const getDirections = useCallback(async (source: { lat: number; lng: number }, destination: { lat: number; lng: number }) => {
+    if (!isMapReady || isUpdatingDirections) return;
 
     try {
+      setIsUpdatingDirections(true);
+      
       const directionsService = new google.maps.DirectionsService();
       const result = await directionsService.route({
-        origin: { lat: sourceCoordinates.lat, lng: sourceCoordinates.lng },
-        destination: { lat: destinationCoordinates.lat, lng: destinationCoordinates.lng },
+        origin: source,
+        destination: destination,
         travelMode: google.maps.TravelMode.DRIVING,
       });
 
       setDirections(result);
-      setDirectionsData?.({
-        distance: result.routes[0].legs[0].distance?.value || 0,
-        duration: result.routes[0].legs[0].duration?.value || 0,
-        routes: result.routes.map(route => ({
-          distance: route.legs[0].distance?.value || 0,
-          duration: route.legs[0].duration?.value || 0,
-          geometry: {
-            type: 'LineString',
-            coordinates: route.overview_path.map(point => [point.lng(), point.lat()])
-          }
-        }))
-      });
+      
+      if (!result.routes || result.routes.length === 0) {
+        throw new Error('No routes found');
+      }
+
+      const route = result.routes[0];
+      if (!route.legs || route.legs.length === 0) {
+        throw new Error('No legs found in route');
+      }
+
+      const leg = route.legs[0];
+      
+      // Convert distance from meters to kilometers and duration from seconds to minutes
+      const distanceInKm = (leg.distance?.value || 0) / 1000;
+      const durationInMinutes = (leg.duration?.value || 0) / 60;
+
+      // Only update if values actually changed
+      if (directionsData?.distance !== distanceInKm || directionsData?.duration !== durationInMinutes) {
+        setDirectionsData?.({
+          distance: distanceInKm,
+          duration: durationInMinutes,
+          routes: [{
+            distance: distanceInKm,
+            duration: durationInMinutes,
+            geometry: {
+              type: 'LineString',
+              coordinates: route.overview_path.map(point => [point.lng(), point.lat()])
+            },
+            legs: [{
+              start_address: leg.start_address,
+              end_address: leg.end_address
+            }]
+          }]
+        });
+      }
+      
+      setTimeout(() => setIsUpdatingDirections(false), 500);
     } catch (error) {
       console.error('Error getting directions:', error);
       setError('Failed to get directions. Please try again.');
+      setDirectionsData?.(null);
+      setIsUpdatingDirections(false);
     }
-  }, [sourceCoordinates, destinationCoordinates, setDirectionsData, isMapReady]);
+  }, [directionsData, setDirectionsData, isMapReady, isUpdatingDirections]);
 
+  // First mount effect - fit map to directions if they exist
   useEffect(() => {
-    if (sourceCoordinates && mapRef.current) {
-      mapRef.current.panTo({ lat: sourceCoordinates.lat, lng: sourceCoordinates.lng });
+    if (isMapReady && mapRef.current && directionsData?.routes?.[0]?.legs?.[0] && !sourceCoords && !destCoords) {
+      setIsUpdatingCoordinates(true);
+      
+      const leg = directionsData.routes[0].legs[0];
+      const geocoder = new google.maps.Geocoder();
+      
+      // Geocode addresses to get coordinates
+      Promise.all([
+        new Promise<{lat: number, lng: number}>((resolve) => {
+          geocoder.geocode({ address: leg.start_address }, (results, status) => {
+            if (status === 'OK' && results?.[0]?.geometry?.location) {
+              const location = results[0].geometry.location;
+              resolve({ lat: location.lat(), lng: location.lng() });
+            } else {
+              resolve(defaultCenter); // Fallback to default
+            }
+          });
+        }),
+        new Promise<{lat: number, lng: number}>((resolve) => {
+          geocoder.geocode({ address: leg.end_address }, (results, status) => {
+            if (status === 'OK' && results?.[0]?.geometry?.location) {
+              const location = results[0].geometry.location;
+              resolve({ lat: location.lat(), lng: location.lng() });
+            } else {
+              resolve(defaultCenter); // Fallback to default
+            }
+          });
+        })
+      ]).then(([source, destination]) => {
+        setSourceCoords(source);
+        setDestCoords(destination);
+        
+        // Fit the map to show both markers
+        const bounds = new google.maps.LatLngBounds();
+        bounds.extend(source);
+        bounds.extend(destination);
+        mapRef.current?.fitBounds(bounds);
+        
+        setTimeout(() => setIsUpdatingCoordinates(false), 500);
+      });
     }
-  }, [sourceCoordinates]);
+  }, [isMapReady, directionsData]);
 
+  // Update directions when coordinates change
   useEffect(() => {
-    if (destinationCoordinates && mapRef.current) {
-      mapRef.current.panTo({ lat: destinationCoordinates.lat, lng: destinationCoordinates.lng });
-      if (sourceCoordinates && isMapReady) {
-        getDirections();
-      }
+    if (sourceCoords && destCoords && !isUpdatingCoordinates && !isUpdatingDirections) {
+      // Get directions
+      getDirections(sourceCoords, destCoords);
     }
-  }, [destinationCoordinates, sourceCoordinates, getDirections, isMapReady]);
+  }, [sourceCoords, destCoords, getDirections, isUpdatingCoordinates, isUpdatingDirections]);
 
+  // Handle map loading error
   useEffect(() => {
     if (loadError && retryCount < 3) {
       const timer = setTimeout(() => {
@@ -139,29 +208,28 @@ export default function GoogleMapComponent() {
             fullscreenControl: false,
             gestureHandling: 'greedy',
             disableDoubleClickZoom: true,
+            scrollwheel: false,
           }}
         >
-          {sourceCoordinates && (
-            <Marker
-              position={{ lat: sourceCoordinates.lat, lng: sourceCoordinates.lng }}
+          {directions && <DirectionsRenderer directions={directions} options={{ suppressMarkers: true }} />}
+          {sourceCoords && (
+            <Marker 
+              position={sourceCoords}
               icon={{
                 url: '/location.png',
-                scaledSize: new google.maps.Size(40, 40),
+                scaledSize: new google.maps.Size(30, 30),
               }}
             />
           )}
-
-          {destinationCoordinates && (
-            <Marker
-              position={{ lat: destinationCoordinates.lat, lng: destinationCoordinates.lng }}
+          {destCoords && (
+            <Marker 
+              position={destCoords}
               icon={{
                 url: '/pin.png',
-                scaledSize: new google.maps.Size(40, 40),
+                scaledSize: new google.maps.Size(30, 30),
               }}
             />
           )}
-
-          {directions && <DirectionsRenderer directions={directions} />}
         </GoogleMap>
       </div>
       {error && (

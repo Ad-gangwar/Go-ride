@@ -1,68 +1,24 @@
-import { DestinationCoordinatesContext } from "@/context/destination-coordinates-context";
-import { SourceCoordinatesContext } from "@/context/source-coordinates-context";
-import { useAuth } from "@/context/auth-context";
-import Image from "next/image";
-import { useContext } from "react";
-import { Marker } from "react-map-gl";
+'use client';
+
+import { useContext } from 'react';
+import { Marker } from '@react-google-maps/api';
+import { DirectionsDataContext } from '@/context/directions-data-context';
 
 export default function Markers() {
-  const { user } = useAuth();
+  const { directionsData } = useContext(DirectionsDataContext) ?? {};
 
-  const { sourceCoordinates } = useContext(SourceCoordinatesContext) ?? {};
-  const { destinationCoordinates } =
-    useContext(DestinationCoordinatesContext) ?? {};
-
-  let userInitials = "";
-  if (user?.firstName) {
-    userInitials = `${user.firstName[0]}`;
-    if (user.lastName) {
-      userInitials += `${user.lastName[0]}`;
-    }
-  } else {
-    userInitials = user?.username?.[0]?.toUpperCase() ?? "";
+  if (!directionsData?.routes?.[0]?.legs?.[0]) {
+    return null;
   }
 
-  return (
-    <div>
-      {sourceCoordinates && (
-        <Marker
-          longitude={sourceCoordinates?.lng}
-          latitude={sourceCoordinates?.lat}
-        >
-          <div className="relative w-10 h-10">
-            <Image
-              src="/location.png"
-              alt="location pin"
-              layout="fill"
-              objectFit="contain"
-              className="rounded-full"
-            />
-            <span className="absolute inset-0 flex items-center justify-center text-white font-semibold">
-              {userInitials}
-            </span>
-          </div>
-        </Marker>
-      )}
+  const leg = directionsData.routes[0].legs[0];
+  const source = { lat: parseFloat(leg.start_address.split(',')[0]), lng: parseFloat(leg.start_address.split(',')[1]) };
+  const destination = { lat: parseFloat(leg.end_address.split(',')[0]), lng: parseFloat(leg.end_address.split(',')[1]) };
 
-      {destinationCoordinates && (
-        <Marker
-          longitude={destinationCoordinates?.lng}
-          latitude={destinationCoordinates?.lat}
-        >
-          <div className="relative w-10 h-10">
-            <Image
-              src="/pin.png"
-              alt="location pin"
-              layout="fill"
-              objectFit="contain"
-              className="rounded-full"
-            />
-            <span className="absolute inset-0 flex items-center justify-center text-white font-semibold">
-              {userInitials}
-            </span>
-          </div>
-        </Marker>
-      )}
-    </div>
+  return (
+    <>
+      <Marker position={source} />
+      <Marker position={destination} />
+    </>
   );
 }

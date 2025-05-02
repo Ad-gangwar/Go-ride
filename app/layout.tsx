@@ -5,8 +5,6 @@ import { AuthProvider } from "@/context/auth-context";
 import { ThemeProvider } from "@/context/theme-context";
 import { DirectionsDataProvider } from "@/context/directions-data-context";
 import { SelectedCarAmountProvider } from "@/context/selected-car-amount-context";
-import { SourceCoordinatesProvider } from "@/context/source-coordinates-context";
-import { DestinationCoordinatesProvider } from "@/context/destination-coordinates-context";
 import { GoogleMapsProvider } from "@/context/google-maps-context";
 import Navbar from "@/components/nav-bar";
 import { Toaster } from "react-hot-toast";
@@ -37,13 +35,9 @@ export default function RootLayout({
               <ThemeProvider>
                 <DirectionsDataProvider>
                   <SelectedCarAmountProvider>
-                    <SourceCoordinatesProvider>
-                      <DestinationCoordinatesProvider>
-                        <Toaster position="top-center" />
-                        <Navbar />
-                        {children}
-                      </DestinationCoordinatesProvider>
-                    </SourceCoordinatesProvider>
+                    <Toaster position="top-center" />
+                    <Navbar />
+                    {children}
                   </SelectedCarAmountProvider>
                 </DirectionsDataProvider>
               </ThemeProvider>

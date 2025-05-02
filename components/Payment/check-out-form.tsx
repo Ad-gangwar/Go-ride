@@ -20,7 +20,7 @@ export default function CheckOutForm({
   const [clientSecret, setClientSecret] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const paymentAmount = amount ? (amount / 100).toFixed(2) : "0.00"; // Display amount in dollars
+  const paymentAmount = amount ? (amount / 100).toFixed(2) : "0.00"; // Display amount in rupees
 
   useEffect(() => {
     // Create PaymentIntent as soon as the page loads
@@ -111,7 +111,7 @@ export default function CheckOutForm({
           disabled={!stripe || loading}
           className="w-full bg-yellow-500 p-2 rounded-lg mt-2 font-bold disabled:opacity-50 disabled:animate-pulse"
         >
-          {!loading ? `Pay $${paymentAmount}` : "Processing..."}
+          {!loading ? `Pay ₹${paymentAmount}` : "Processing..."}
         </button>
         {/* Show error message to your customers */}
         {errorMessage && <div>{errorMessage}</div>}

@@ -20,17 +20,35 @@ export default function Cars() {
   const { directionsData } = useContext(DirectionsDataContext) ?? {};
   const { setCarAmount } = useContext(SelectedCarAmountContext) ?? {};
 
-
   const calculateCost = useCallback((charges: number) => {
     try {
       if (!directionsData?.routes || directionsData.routes.length === 0) {
         return { cost: "0.00", error: "Please select valid source and destination points" };
       }
-      const distanceInKm = directionsData.routes[0].distance / 1000;
-      const timeInMinutes = directionsData.routes[0].duration / 60;
-      const trafficMultiplier = 1.2;
-      const cost = charges * (distanceInKm + timeInMinutes * 0.1) * trafficMultiplier;
-      return { cost: cost.toFixed(2), error: null };
+      
+      // Get the first route's first leg
+      const route = directionsData.routes[0];
+      if (!route.legs || route.legs.length === 0) {
+        return { cost: "0.00", error: "Route information is incomplete" };
+      }
+
+      // Use the distance and duration directly from the route
+      const distanceInKm = route.distance;
+      const timeInMinutes = route.duration;
+      
+      // Base fare calculation
+      const baseFare = 2.5; // Minimum fare
+      const distanceFare = distanceInKm * charges; // Distance-based fare
+      const timeFare = (timeInMinutes / 60) * charges * 0.5; // Time-based fare (half the rate of distance)
+      const trafficMultiplier = 1.1; // 10% extra for traffic
+      
+      // Calculate total cost
+      const totalCost = (baseFare + distanceFare + timeFare) * trafficMultiplier;
+      
+      return { 
+        cost: totalCost.toFixed(2), 
+        error: null 
+      };
     } catch (error) {
       console.error('Error calculating cost:', error);
       return { cost: "0.00", error: "Error calculating fare. Please try again." };
@@ -41,11 +59,10 @@ export default function Cars() {
     setSelectedCar(car.id);
     const { cost, error } = calculateCost(car.charges);
     setError(error);
-    if (setCarAmount) {
+    if (setCarAmount && !error) {
       setCarAmount(cost);
     }
   }, [calculateCost, setCarAmount]);
-
 
   if (!directionsData) {
     return (
@@ -60,7 +77,14 @@ export default function Cars() {
 
   return (
     <div className="mt-3">
-      <h2 className="font-medium text-[14px]">Select Car</h2>
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="font-medium text-[14px]">Select Car</h2>
+        {selectedCar && (
+          <div className="text-sm font-medium text-gray-600">
+            Total Amount: <span className="text-green-600">${calculateCost(CarsList.find(c => c.id === selectedCar)?.charges || 0).cost}</span>
+          </div>
+        )}
+      </div>
       {error && (
         <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
           {error}
@@ -72,8 +96,9 @@ export default function Cars() {
             <button
               type="button"
               key={car.id}
-              className={`m-2 p-2 border-[1px] rounded-md hover:border-yellow-400 cursor-pointer transition-all duration-200 ${car.id === selectedCar ? "border-yellow-400 border-[2px] bg-yellow-50" : ""
-                }`}
+              className={`m-2 p-2 border-[1px] rounded-md hover:border-yellow-400 cursor-pointer transition-all duration-200 ${
+                car.id === selectedCar ? "border-yellow-400 border-[2px] bg-yellow-50" : ""
+              }`}
               onClick={() => handleCarSelect(car)}
             >
               <Image
