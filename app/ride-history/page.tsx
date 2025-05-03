@@ -20,6 +20,8 @@ interface RideHistory {
   feedbackSubmitted?: boolean;
 }
 
+type FilterStatus = 'all' | 'completed' | 'cancelled';
+
 export default function RideHistoryPage() {
   const { user, loading } = useAuth();
   const [rideHistory, setRideHistory] = useState<RideHistory[]>([]);
@@ -29,7 +31,7 @@ export default function RideHistoryPage() {
     key: keyof RideHistory;
     direction: 'ascending' | 'descending';
   } | null>(null);
-  const [filterStatus, setFilterStatus] = useState<'all' | 'completed' | 'cancelled'>('all');
+  const [filterStatus, setFilterStatus] = useState<FilterStatus>('all');
   const [selectedRide, setSelectedRide] = useState<RideHistory | null>(null);
   const [feedbackText, setFeedbackText] = useState('');
   const [rating, setRating] = useState(0);
@@ -241,7 +243,7 @@ export default function RideHistoryPage() {
             <div className="relative dark:text-gray-900">
               <select
                 value={filterStatus}
-                onChange={(e) => setFilterStatus(e.target.value as any)}
+                onChange={(e) => setFilterStatus(e.target.value as FilterStatus)}
                 className="text-lg pl-4 pr-10 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 appearance-none"
               >
                 <option value="all">All Rides</option>

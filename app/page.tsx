@@ -15,7 +15,7 @@ export default function Home() {
       setImageIndex((prev) => (prev + 1) % images.length);
     }, 3000);
     return () => clearInterval(interval);
-  }, []);
+  }, [images.length]);
 
   return (
     <div className="flex flex-col min-h-screen">

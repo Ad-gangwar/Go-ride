@@ -17,6 +17,15 @@ interface RideHistory {
   rating?: number;
 }
 
+interface UserData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  address: string;
+  [key: string]: string;
+}
+
 export default function ProfilePage() {
   const { user, loading } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
@@ -160,7 +169,7 @@ export default function ProfilePage() {
                     <input
                       type={field === 'email' ? 'email' : field === 'phone' ? 'tel' : 'text'}
                       name={field}
-                      value={(userData as any)[field]}
+                      value={(userData as UserData)[field]}
                       onChange={handleInputChange}
                       disabled={field === 'email'}
                       className="mt-2 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-all-md focus:outline-none focus:ring-yellow-500 focus:border-yellow-500"
