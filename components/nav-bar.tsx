@@ -16,10 +16,10 @@ export default function Navbar() {
           <Image src="/logo.png" alt="logo" width={140} height={70} priority className="" />
         </Link>
         <div className="hidden md:flex gap-8">
-          <Link href="/">
+          <Link href="/booking">
             <div className="flex items-center hover:bg-gray-100 dark:hover:bg-gray-700 p-2.5 rounded-lg cursor-pointer transition-all">
               <Map size={20} className="mr-2.5 text-primary-500" />
-              <span className="font-medium text-gray-700 dark:text-gray-200">Home</span>
+              <span className="font-medium text-gray-700 dark:text-gray-200">Ride Booking</span>
             </div>
           </Link>
           <Link href="/ride-history">

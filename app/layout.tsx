@@ -7,6 +7,7 @@ import { DirectionsDataProvider } from "@/context/directions-data-context";
 import { SelectedCarAmountProvider } from "@/context/selected-car-amount-context";
 import { GoogleMapsProvider } from "@/context/google-maps-context";
 import Navbar from "@/components/nav-bar";
+import Footer from "@/components/footer";
 import { Toaster } from "react-hot-toast";
 import ErrorBoundary from "./error-boundary";
 
@@ -37,7 +38,10 @@ export default function RootLayout({
                   <SelectedCarAmountProvider>
                     <Toaster position="top-center" />
                     <Navbar />
-                    {children}
+                    <main className="min-h-[calc(100vh-4rem)]">
+                      {children}
+                    </main>
+                    <Footer />
                   </SelectedCarAmountProvider>
                 </DirectionsDataProvider>
               </ThemeProvider>

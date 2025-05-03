@@ -2,9 +2,11 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useAuth } from '@/context/auth-context';
 import { Toaster } from 'react-hot-toast';
-import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { ArrowLeft, UserPlus } from 'lucide-react';
 
 export default function RegisterPage() {
   const [username, setUsername] = useState('');
@@ -22,84 +24,143 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-[94vh] grid grid-cols-1 lg:grid-cols-2">
+    <div className="min-h-[94vh] grid grid-cols-1 lg:grid-cols-2 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
       <Toaster position="top-center" />
 
       {/* Left side - Register Form */}
-      <div className="h-full lg:flex flex-col items-center justify-center px-4">
-        <div className="text-center space-y-4 pt-16">
-          <h1 className="font-bold text-3xl">Create Account</h1>
-          <p className="text-base">
-            Sign up to get started with GoRide!
-          </p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="w-full max-w-md mt-8 space-y-6">
-          <div>
-            <label htmlFor="username" className="block text-lg font-medium ">
-              Username
-            </label>
-            <input
-              id="username"
-              type="text"
-              required
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="mt-1 block w-full px-3 py-3.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="email" className="block text-lg font-medium">
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 block w-full px-3 py-3.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="password" className="block text-lg font-medium ">
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 block w-full px-3 py-3.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500"
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="w-full flex justify-center py-4 px-4 border border-transparent rounded-md shadow-sm text-xl font-medium text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+      <motion.div 
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.8 }}
+        className="h-full lg:flex flex-col items-center justify-center px-4 py-12"
+      >
+        <div className="w-full max-w-md">
+          <Link 
+            href="/" 
+            className="inline-flex items-center text-gray-600 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-500 mb-8 transition-colors"
           >
-            Sign up
-          </button>
+            <ArrowLeft size={20} className="mr-2" />
+            Back to Home
+          </Link>
 
-          <p className="text-center text-lg">
-            Already have an account?{' '}
-            <Link href="/login" className="font-medium text-yellow-600 hover:text-yellow-500">
-              Sign in
-            </Link>
-          </p>
-        </form>
-      </div>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-center space-y-4 mb-12"
+          >
+            <h1 className="font-bold text-4xl text-gray-900 dark:text-white">Create Account</h1>
+            <p className="text-lg text-gray-600 dark:text-gray-300">
+              Sign up to get started with Taxi Go!
+            </p>
+          </motion.div>
+
+          <motion.form 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            onSubmit={handleSubmit} 
+            className="space-y-6 bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl"
+          >
+            <div>
+              <label htmlFor="username" className="block text-lg font-medium text-gray-700 dark:text-gray-200">
+                Username
+              </label>
+              <input
+                id="username"
+                type="text"
+                required
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="mt-2 block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors"
+                placeholder="Choose a username"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="email" className="block text-lg font-medium text-gray-700 dark:text-gray-200">
+                Email
+              </label>
+              <input
+                id="email"
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="mt-2 block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors"
+                placeholder="Enter your email"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="password" className="block text-lg font-medium text-gray-700 dark:text-gray-200">
+                Password
+              </label>
+              <input
+                id="password"
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="mt-2 block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors"
+                placeholder="Create a password"
+              />
+            </div>
+
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              type="submit"
+              className="w-full flex justify-center items-center py-3.5 px-4 border border-transparent rounded-lg shadow-sm text-xl font-medium text-white bg-primary-500 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-300"
+            >
+              <UserPlus size={20} className="mr-2" />
+              Sign up
+            </motion.button>
+
+            <div className="text-center mt-4">
+              <p className="text-gray-600 dark:text-gray-300">
+                Already have an account?{' '}
+                <Link 
+                  href="/login" 
+                  className="text-primary-500 hover:text-primary-600 font-medium transition-colors"
+                >
+                  Sign in
+                </Link>
+              </p>
+            </div>
+          </motion.form>
+        </div>
+      </motion.div>
 
       {/* Right side - Car Image */}
-      <div className="h-full bg-yellow-400 hidden lg:flex items-center justify-center">
-        <div className="animate-slide-in-right">
-          <Image src="/4.png" height={900} width={900} alt="Car" priority />
+      <motion.div 
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.8 }}
+        className="h-full hidden lg:flex items-center justify-center p-8"
+      >
+        <div className="relative w-full h-full max-w-2xl">
+          <motion.div
+            animate={{
+              y: [0, -20, 0],
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute inset-0"
+          >
+            <Image 
+              src="/4.png" 
+              alt="Car" 
+              fill
+              className="object-contain"
+              priority 
+            />
+          </motion.div>
         </div>
-      </div>
-
+      </motion.div>
     </div>
   );
 } 
