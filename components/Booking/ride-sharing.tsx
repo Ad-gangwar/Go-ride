@@ -109,7 +109,7 @@ export default function RideSharing({ from, to, onFareChange }: {
   return (
     <div className="mt-4 border-t pt-4">
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-xl font-semibold">Ride Sharing</h3>
+        <h3 className="text-[15px] font-semibold">Ride Sharing</h3>
         <button 
           onClick={handleSharingToggle}
           className={`flex items-center gap-2 px-3 py-2 rounded-md ${

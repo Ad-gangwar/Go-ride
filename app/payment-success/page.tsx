@@ -22,7 +22,7 @@ export default function PaymentSuccessPage({
   }, [router]);
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
+    <main className="min-h-screen my-12 flex items-center justify-center bg-gray-50 p-4">
       <div className="max-w-2xl w-full bg-white rounded-xl shadow-lg overflow-hidden">
         <div className="bg-gradient-to-r from-blue-500 to-purple-500 p-8 text-white text-center">
           <div className="flex justify-center mb-4">

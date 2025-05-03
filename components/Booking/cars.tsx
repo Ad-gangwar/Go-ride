@@ -78,7 +78,7 @@ export default function Cars() {
   return (
     <div className="mt-3">
       <div className="flex justify-between items-center mb-2">
-        <h2 className="font-medium text-[20px]">Select Car</h2>
+        <h2 className="font-medium text-[15px]">Select Car</h2>
         {selectedCar && (
           <div className="text-sm font-medium text-gray-600">
             Total Amount: <span className="text-green-600">${calculateCost(CarsList.find(c => c.id === selectedCar)?.charges || 0).cost}</span>

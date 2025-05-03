@@ -84,7 +84,7 @@ export default function Booking() {
         
         <button
           type="submit"
-          className={`w-full p-3 rounded-md mt-4 text-xl font-semibold ${
+          className={`w-full p-3 rounded-md mt-4 text-lg font-semibold ${
             numericCarAmount > 0 ? "bg-yellow-400 hover:bg-yellow-500" : "bg-gray-200 cursor-not-allowed"
           }`}
           disabled={numericCarAmount <= 0}

@@ -28,27 +28,27 @@ const Footer = () => {
   return (
     <footer className='pb-20 pt-14 bg-yellow-400 dark:bg-gray-800'>
       <div className='container mx-auto px-12'>
-        <div className='flex justify-between flex-col md:flex-row flex-wrap gap-10'>
+        <div className='flex justify-between flex-col md:flex-row flex-wrap gap-5 max-w-6xl mx-auto'>
           
           {/* Brand Info */}
           <div className='max-w-[320px]'>
             <h2 className='text-[30px] font-bold text-headingColor dark:text-white mb-4'>
               Taxi Go
             </h2>
-            <p className='text-md leading-8 font-normal text-textColor dark:text-gray-300'>
+            <p className='text-lg leading-8 font-normal text-textColor dark:text-gray-300'>
               Copyright © {year} Developed by Aditya Gangwar. All rights reserved.
             </p>
           </div>
 
           {/* Quick Sections */}
           <div>
-            <h2 className='text-lg font-semibold mb-6 text-headingColor dark:text-white'>I want to:</h2>
+            <h2 className='text-xl font-semibold mb-6 text-headingColor dark:text-white'>I want to:</h2>
             <ul>
               {quickLinks02.map((item, index) => (
                 <li key={index} className='mb-3'>
                   <Link 
                     href={item.path} 
-                    className='text-md font-medium text-textColor dark:text-gray-300 hover:text-primaryColor dark:hover:text-primaryColor transition-colors'
+                    className='text-lg font-medium text-textColor dark:text-gray-300 hover:text-primaryColor dark:hover:text-primaryColor transition-colors'
                   >
                     {item.display}
                   </Link>
@@ -58,13 +58,13 @@ const Footer = () => {
           </div>
 
           <div>
-            <h2 className='text-lg font-semibold mb-6 text-headingColor dark:text-white'>Support</h2>
+            <h2 className='text-xl font-semibold mb-6 text-headingColor dark:text-white'>Support</h2>
             <ul>
               {quickLinks03.map((item, index) => (
                 <li key={index} className='mb-3'>
                   <Link 
                     href={item.path} 
-                    className='text-md font-medium text-textColor dark:text-gray-300 hover:text-primaryColor dark:hover:text-primaryColor transition-colors'
+                    className='text-lg font-medium text-textColor dark:text-gray-300 hover:text-primaryColor dark:hover:text-primaryColor transition-colors'
                   >
                     {item.display}
                   </Link>
@@ -74,13 +74,13 @@ const Footer = () => {
           </div>
 
           <div>
-            <h2 className='text-lg font-semibold mb-6 text-headingColor dark:text-white'>Quick Links</h2>
+            <h2 className='text-xl font-semibold mb-6 text-headingColor dark:text-white'>Quick Links</h2>
             <ul>
               {quickLinks01.map((item, index) => (
                 <li key={index} className='mb-3'>
                   <Link 
                     href={item.path} 
-                    className='text-md font-medium text-textColor dark:text-gray-300 hover:text-primaryColor dark:hover:text-primaryColor transition-colors'
+                    className='text-lg font-medium text-textColor dark:text-gray-300 hover:text-primaryColor dark:hover:text-primaryColor transition-colors'
                   >
                     {item.display}
                   </Link>

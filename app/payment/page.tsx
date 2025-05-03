@@ -151,7 +151,7 @@ export default function PaymentPage() {
   }
 
   return (
-    <main className="max-w-6xl mx-auto p-10 text-white text-center border m-10 rounded-md bg-gradient-to-tr from-blue-500 to-purple-500">
+    <main className="max-w-6xl my-12 mx-auto p-10 text-white text-center border m-10 rounded-md bg-gradient-to-tr from-blue-500 to-purple-500">
       <div className="mb-10">
         <h1 className="text-4xl font-extrabold mb-2">Complete Payment</h1>
         <h2 className="text-2xl">Amount to be paid</h2>
