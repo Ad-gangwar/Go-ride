@@ -49,8 +49,8 @@ export default function RegisterPage() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-center space-y-4 mb-12"
           >
-            <h1 className="font-bold text-4xl text-gray-900 dark:text-white">Create Account</h1>
-            <p className="text-lg text-gray-600 dark:text-gray-300">
+            <h1 className="font-bold text-2xl text-gray-900 dark:text-white">Create Account</h1>
+            <p className="text-md text-gray-600 dark:text-gray-300">
               Sign up to get started with Taxi Go!
             </p>
           </motion.div>

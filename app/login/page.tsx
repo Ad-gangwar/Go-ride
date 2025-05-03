@@ -48,8 +48,8 @@ export default function LoginPage() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-center space-y-4 mb-12"
           >
-            <h1 className="font-bold text-4xl text-gray-900 dark:text-white">Welcome Back!</h1>
-            <p className="text-lg text-gray-600 dark:text-gray-300">
+            <h1 className="font-bold text-2xl text-gray-900 dark:text-white">Welcome Back!</h1>
+            <p className="text-md text-gray-600 dark:text-gray-300">
               Log in to get back to your dashboard!
             </p>
           </motion.div>
