@@ -155,8 +155,9 @@ export default function RegisterPage() {
               src="/4.png" 
               alt="Car" 
               fill
-              className="object-contain"
+              className="object-contain max-w-2xl"
               priority 
+              unoptimized
             />
           </motion.div>
         </div>
