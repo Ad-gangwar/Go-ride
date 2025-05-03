@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  images: {
+    domains: ['dummyjson.com'],
+  },
   async headers() {
     return [
       {
@@ -11,8 +14,8 @@ const nextConfig = {
             value: `
               default-src 'self';
               script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.stripe.com https://*.googleapis.com https://*.google.com;
-              connect-src 'self' https://*.stripe.com https://*.googleapis.com https://*.google.com https://maps.googleapis.com;
-              img-src 'self' data: https://*.stripe.com https://*.googleapis.com https://*.google.com https://*.gstatic.com https://*.ggpht.com;
+              connect-src 'self' https://*.stripe.com https://*.googleapis.com https://*.google.com https://maps.googleapis.com https://dummyjson.com;
+              img-src 'self' data: https://*.stripe.com https://*.googleapis.com https://*.google.com https://*.gstatic.com https://*.ggpht.com https://dummyjson.com;
               frame-src 'self' https://*.stripe.com;
               style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
               font-src 'self' https://fonts.gstatic.com;

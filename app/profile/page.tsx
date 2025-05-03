@@ -101,7 +101,7 @@ export default function ProfilePage() {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center">
         <p className="mb-4">Please log in to view your profile</p>
-        <Link href="/login" className="px-4 py-2 bg-yellow-500 text-white rounded-md">
+        <Link href="/login" className="px-4 py-2 bg-yellow-50 dark:0 rounded-md">
           Go to Login
         </Link>
       </div>
@@ -118,18 +118,18 @@ export default function ProfilePage() {
     rideHistory.filter(ride => ride.rating).length || 0;
 
   return (
-    <div className="min-h-screen py-8 px-4 md:px-8 bg-gray-50">
+    <div className="min-h-screen py-8 px-4 md:px-8">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold mb-6 text-gray-800">My Profile</h1>
+        <h1 className="text-3xl font-bold mb-6">My Profile</h1>
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Profile Card */}
-          <div className="col-span-1 bg-white p-6 rounded-lg shadow-md">
+          <div className="col-span-1 dark:bg-gray-800 p-6 rounded-lg shadow-md">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-semibold text-gray-800">Personal Information</h2>
               <button 
                 onClick={() => setIsEditing(!isEditing)}
-                className="p-2 text-gray-500 hover:text-yellow-500"
+                className="p-2 hover:text-yellow-500"
               >
                 <Edit2 size={18} />
               </button>
@@ -145,7 +145,7 @@ export default function ProfilePage() {
                   className="rounded-full"
                 />
               ) : (
-                <div className="w-24 h-24 bg-yellow-100 rounded-full flex items-center justify-center">
+                <div className="w-24 h-24 dark:bg-gray-700 rounded-full flex items-center justify-center">
                   <User size={40} className="text-yellow-500" />
                 </div>
               )}
@@ -154,7 +154,7 @@ export default function ProfilePage() {
             {isEditing ? (
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">First Name</label>
+                  <label className="block text-sm font-medium">First Name</label>
                   <input
                     type="text"
                     name="firstName"
@@ -164,7 +164,7 @@ export default function ProfilePage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Last Name</label>
+                  <label className="block text-sm font-medium">Last Name</label>
                   <input
                     type="text"
                     name="lastName"
@@ -174,7 +174,7 @@ export default function ProfilePage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Email</label>
+                  <label className="block text-sm font-medium">Email</label>
                   <input
                     type="email"
                     name="email"
@@ -185,7 +185,7 @@ export default function ProfilePage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Phone</label>
+                  <label className="block text-sm font-medium">Phone</label>
                   <input
                     type="tel"
                     name="phone"
@@ -195,7 +195,7 @@ export default function ProfilePage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Address</label>
+                  <label className="block text-sm font-medium">Address</label>
                   <input
                     type="text"
                     name="address"
@@ -206,7 +206,7 @@ export default function ProfilePage() {
                 </div>
                 <button
                   type="submit"
-                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium bg-yellow-50 dark:0 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
                 >
                   Save Changes
                 </button>
@@ -214,23 +214,23 @@ export default function ProfilePage() {
             ) : (
               <div className="space-y-4">
                 <div>
-                  <p className="text-sm text-gray-500">Username</p>
+                  <p className="text-sm">Username</p>
                   <p className="font-medium">{user.username}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Name</p>
+                  <p className="text-sm">Name</p>
                   <p className="font-medium">{userData.firstName} {userData.lastName}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Email</p>
+                  <p className="text-sm">Email</p>
                   <p className="font-medium">{userData.email}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Phone</p>
+                  <p className="text-sm">Phone</p>
                   <p className="font-medium">{userData.phone || 'Not provided'}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Address</p>
+                  <p className="text-sm">Address</p>
                   <p className="font-medium">{userData.address || 'Not provided'}</p>
                 </div>
               </div>
@@ -240,27 +240,27 @@ export default function ProfilePage() {
           {/* Statistics & Recent Rides */}
           <div className="col-span-1 lg:col-span-2 space-y-6">
             {/* Statistics */}
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">Ride Statistics</h2>
+            <div className="p-6 rounded-lg shadow-md">
+              <h2 className="text-xl font-semibold mb-4">Ride Statistics</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="bg-yellow-50 p-4 rounded-lg">
+                <div className="bg-yellow-50 dark:bg-gray-800 p-4 rounded-lg">
                   <div className="flex items-center mb-2">
                     <MapPin className="text-yellow-500 mr-2" size={18} />
-                    <h3 className="font-medium text-gray-700">Total Rides</h3>
+                    <h3 className="font-medium">Total Rides</h3>
                   </div>
                   <p className="text-2xl font-bold text-yellow-500">{totalRides}</p>
                 </div>
-                <div className="bg-yellow-50 p-4 rounded-lg">
+                <div className="bg-yellow-50  dark:bg-gray-800 p-4 rounded-lg">
                   <div className="flex items-center mb-2">
                     <Star className="text-yellow-500 mr-2" size={18} />
-                    <h3 className="font-medium text-gray-700">Average Rating</h3>
+                    <h3 className="font-medium">Average Rating</h3>
                   </div>
                   <p className="text-2xl font-bold text-yellow-500">{averageRating.toFixed(1)}</p>
                 </div>
-                <div className="bg-yellow-50 p-4 rounded-lg">
+                <div className="bg-yellow-50 dark:bg-gray-800 p-4 rounded-lg">
                   <div className="flex items-center mb-2">
                     <Clock className="text-yellow-500 mr-2" size={18} />
-                    <h3 className="font-medium text-gray-700">Total Spent</h3>
+                    <h3 className="font-medium">Total Spent</h3>
                   </div>
                   <p className="text-2xl font-bold text-yellow-500">${totalSpent}</p>
                 </div>
@@ -268,9 +268,9 @@ export default function ProfilePage() {
             </div>
             
             {/* Recent Rides */}
-            <div className="bg-white p-6 rounded-lg shadow-md">
+            <div className="p-6 rounded-lg shadow-md">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-semibold text-gray-800">Recent Rides</h2>
+                <h2 className="text-xl font-semibold">Recent Rides</h2>
                 <Link href="/ride-history" className="text-yellow-500 hover:underline text-sm font-medium">
                   View All
                 </Link>
@@ -283,7 +283,7 @@ export default function ProfilePage() {
                       <div className="flex justify-between">
                         <div>
                           <p className="font-medium">{ride.from} to {ride.to}</p>
-                          <p className="text-sm text-gray-500">{ride.date} • Driver: {ride.driverName}</p>
+                          <p className="text-sm">{ride.date} • Driver: {ride.driverName}</p>
                         </div>
                         <div className="text-right">
                           <p className="font-bold text-yellow-500">{ride.amount}</p>
@@ -305,7 +305,7 @@ export default function ProfilePage() {
                   ))}
                 </div>
               ) : (
-                <p className="text-gray-500 text-center py-4">No ride history available</p>
+                <p className= "text-center py-4">No ride history available</p>
               )}
             </div>
           </div>

@@ -125,10 +125,12 @@ export default function RideHistoryPage() {
     // Apply sorting
     if (sortConfig) {
       result.sort((a, b) => {
-        if (a[sortConfig.key] < b[sortConfig.key]) {
+        const aValue = a[sortConfig.key] ?? '';
+        const bValue = b[sortConfig.key] ?? '';
+        if (aValue < bValue) {
           return sortConfig.direction === 'ascending' ? -1 : 1;
         }
-        if (a[sortConfig.key] > b[sortConfig.key]) {
+        if (aValue > bValue) {
           return sortConfig.direction === 'ascending' ? 1 : -1;
         }
         return 0;
@@ -193,7 +195,7 @@ export default function RideHistoryPage() {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center">
         <p className="mb-4">Please log in to view your ride history</p>
-        <Link href="/login" className="px-4 py-2 bg-yellow-500 text-white rounded-md">
+        <Link href="/login" className="px-4 py-2 bg-yellow-500 rounded-md">
           Go to Login
         </Link>
       </div>
@@ -201,10 +203,10 @@ export default function RideHistoryPage() {
   }
   
   return (
-    <div className="min-h-screen py-8 px-4 md:px-8 bg-gray-50">
+    <div className="min-h-screen py-8 px-4 md:px-8">
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-6">
-          <h1 className="text-3xl font-bold text-gray-800 mb-4 md:mb-0">Ride History</h1>
+          <h1 className="text-3xl font-bold mb-4 md:mb-0">Ride History</h1>
           
           <div className="flex flex-col md:flex-row gap-4">
             <div className="relative">
@@ -215,25 +217,25 @@ export default function RideHistoryPage() {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10 pr-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 w-full"
               />
-              <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+              <Search className="absolute left-3 top-3 h-4 w-4 dark:text-gray-900" />
             </div>
             
-            <div className="relative">
+            <div className="relative dark:text-gray-900">
               <select
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value as any)}
-                className="pl-4 pr-10 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 appearance-none bg-white"
+                className="pl-4 pr-10 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 appearance-none"
               >
                 <option value="all">All Rides</option>
                 <option value="completed">Completed</option>
                 <option value="cancelled">Cancelled</option>
               </select>
-              <ChevronDown className="absolute right-3 top-3 h-4 w-4 text-gray-400 pointer-events-none" />
+              <ChevronDown className="absolute right-3 top-3 h-4 w-4 pointer-events-none" />
             </div>
             
             <button 
               onClick={exportToCSV}
-              className="flex items-center justify-center gap-2 px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600"
+              className="flex items-center justify-center gap-2 px-4 py-2 bg-yellow-500 rounded-md hover:bg-yellow-600"
             >
               <Download size={16} />
               Export
@@ -242,12 +244,12 @@ export default function RideHistoryPage() {
         </div>
         
         {filteredRides.length > 0 ? (
-          <div className="bg-white rounded-lg shadow-md overflow-hidden">
+          <div className="rounded-lg shadow-md overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-gray-50">
+                <thead className="">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                       <button
                         onClick={() => requestSort('date')}
                         className="flex items-center gap-1 hover:text-yellow-600"
@@ -259,10 +261,10 @@ export default function RideHistoryPage() {
                         )}
                       </button>
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                       Route
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                       <button
                         onClick={() => requestSort('driverName')}
                         className="flex items-center gap-1 hover:text-yellow-600"
@@ -273,7 +275,7 @@ export default function RideHistoryPage() {
                         )}
                       </button>
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                       <button
                         onClick={() => requestSort('amount')}
                         className="flex items-center gap-1 hover:text-yellow-600"
@@ -284,7 +286,7 @@ export default function RideHistoryPage() {
                         )}
                       </button>
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                       <button
                         onClick={() => requestSort('status')}
                         className="flex items-center gap-1 hover:text-yellow-600"
@@ -295,10 +297,10 @@ export default function RideHistoryPage() {
                         )}
                       </button>
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                       Payment
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                       Rating
                     </th>
                   </tr>
@@ -306,15 +308,15 @@ export default function RideHistoryPage() {
                 <tbody className="divide-y divide-gray-200">
                   {filteredRides.map((ride) => (
                     <tr key={ride.id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         {ride.date}
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-500">
+                      <td className="px-6 py-4 text-sm">
                         <div className="font-medium">{ride.from}</div>
-                        <div className="text-gray-400">to</div>
+                        <div className="">to</div>
                         <div className="font-medium">{ride.to}</div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm">
                         {ride.driverName}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-yellow-500">
@@ -327,10 +329,10 @@ export default function RideHistoryPage() {
                           {ride.status.charAt(0).toUpperCase() + ride.status.slice(1)}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm">
                         {ride.paymentMethod}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm">
                         {ride.rating ? (
                           <div className="flex items-center">
                             {[...Array(5)].map((_, i) => (
@@ -343,7 +345,7 @@ export default function RideHistoryPage() {
                             ))}
                           </div>
                         ) : (
-                          <span className="text-gray-400">N/A</span>
+                          <span className="">N/A</span>
                         )}
                       </td>
                     </tr>
@@ -353,8 +355,8 @@ export default function RideHistoryPage() {
             </div>
           </div>
         ) : (
-          <div className="bg-white rounded-lg shadow-md p-8 text-center">
-            <p className="text-gray-500 mb-4">No ride history found with the current filters.</p>
+          <div className="rounded-lg shadow-md p-8 text-center">
+            <p className="mb-4">No ride history found with the current filters.</p>
             {searchTerm || filterStatus !== 'all' ? (
               <button
                 onClick={() => {

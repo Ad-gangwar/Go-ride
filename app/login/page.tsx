@@ -20,21 +20,21 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-[90vh] grid grid-cols-1 lg:grid-cols-2">
+    <div className="min-h-[94vh] grid grid-cols-1 lg:grid-cols-2">
       <Toaster position="top-center" />
       
       {/* Left side - Login Form */}
       <div className="h-full lg:flex flex-col items-center justify-center px-4">
         <div className="text-center space-y-4 pt-16">
-          <h1 className="font-bold text-3xl text-[#2E2A47]">Welcome Back!</h1>
-          <p className="text-base text-[#7E8CA0]">
+          <h1 className="font-bold text-3xl">Welcome Back!</h1>
+          <p className="text-base">
             Log in to get back to your dashboard!
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="w-full max-w-md mt-8 space-y-6">
           <div>
-            <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="username" className="block text-sm font-medium">
               Username
             </label>
             <input
@@ -48,7 +48,7 @@ export default function LoginPage() {
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="password" className="block text-sm font-medium">
               Password
             </label>
             <input

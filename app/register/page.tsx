@@ -22,21 +22,21 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2">
+    <div className="min-h-[94vh] grid grid-cols-1 lg:grid-cols-2">
       <Toaster position="top-center" />
       
       {/* Left side - Register Form */}
       <div className="h-full lg:flex flex-col items-center justify-center px-4">
         <div className="text-center space-y-4 pt-16">
-          <h1 className="font-bold text-3xl text-[#2E2A47]">Create Account</h1>
-          <p className="text-base text-[#7E8CA0]">
+          <h1 className="font-bold text-3xl">Create Account</h1>
+          <p className="text-base">
             Sign up to get started with GoRide!
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="w-full max-w-md mt-8 space-y-6">
           <div>
-            <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="username" className="block text-sm font-medium ">
               Username
             </label>
             <input
@@ -50,7 +50,7 @@ export default function RegisterPage() {
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="email" className="block text-sm font-medium">
               Email
             </label>
             <input
@@ -64,7 +64,7 @@ export default function RegisterPage() {
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="password" className="block text-sm font-medium ">
               Password
             </label>
             <input
@@ -84,7 +84,7 @@ export default function RegisterPage() {
             Sign up
           </button>
 
-          <p className="text-center text-sm text-gray-600">
+          <p className="text-center text-sm">
             Already have an account?{' '}
             <Link href="/login" className="font-medium text-yellow-600 hover:text-yellow-500">
               Sign in
@@ -95,7 +95,7 @@ export default function RegisterPage() {
 
       {/* Right side - Car Image */}
       <div className="h-full bg-yellow-400 hidden lg:flex items-center justify-center">
-        <Image src="/4.png" height={700} width={700} alt="Car" priority />
+        <Image src="/4.png" height={900} width={900} alt="Car" priority />
       </div>
     </div>
   );
