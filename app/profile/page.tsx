@@ -128,7 +128,7 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen py-10 px-6 md:px-10 text-base">
-      <div className="max-w-[1400px] mx-auto">
+      <div className="max-w-[1000px] mx-auto">
         <h1 className="text-4xl font-bold mb-8">My Profile</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 shadow-all-lg p-7 rounded-lg ">

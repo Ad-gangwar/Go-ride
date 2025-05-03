@@ -225,113 +225,113 @@ export default function RideHistoryPage() {
   }
 
   return (
-    <div className="min-h-screen py-8 px-4 mt-5 md:px-8 text-lg">
-      <div className="max-w-[1500px] mx-auto">
-        <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-6">
-          <h1 className="text-4xl font-bold mb-4 md:mb-0">Ride History</h1>
-          <div className="flex flex-col md:flex-row gap-4">
+    <div className="min-h-screen py-6 px-4 mt-4 md:px-6 text-base">
+      <div className="max-w-5xl w-full mx-auto">
+        <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-4">
+          <h1 className="text-2xl md:text-3xl font-bold mb-4 md:mb-0">Ride History</h1>
+          <div className="flex flex-col md:flex-row gap-3">
             <div className="relative">
               <input
                 type="text"
                 placeholder="Search rides..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="text-lg pl-10 pr-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 w-full"
+                className="text-sm pl-8 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 w-full"
               />
-              <Search className="absolute left-3 top-3 h-5 w-5 dark:text-gray-900" />
+              <Search className="absolute left-2 top-2.5 h-4 w-4 dark:text-gray-900" />
             </div>
             <div className="relative dark:text-gray-900">
               <select
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value as FilterStatus)}
-                className="text-lg pl-4 pr-10 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 appearance-none"
+                className="text-sm pl-3 pr-8 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 appearance-none"
               >
                 <option value="all">All Rides</option>
                 <option value="completed">Completed</option>
                 <option value="cancelled">Cancelled</option>
               </select>
-              <ChevronDown className="absolute right-3 top-3 h-5 w-5 pointer-events-none" />
+              <ChevronDown className="absolute right-2 top-2.5 h-4 w-4 pointer-events-none" />
             </div>
             <button
               onClick={exportToCSV}
-              className="flex items-center justify-center gap-2 px-4 py-2 bg-yellow-500 rounded-md hover:bg-yellow-600 text-lg font-medium"
+              className="flex items-center justify-center gap-2 px-3 py-2 bg-yellow-500 rounded-md hover:bg-yellow-600 text-sm font-medium"
             >
-              <Download size={18} />
+              <Download size={16} />
               Export
             </button>
           </div>
         </div>
 
         {filteredRides.length > 0 ? (
-          <div className="rounded-lg shadow-md overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full text-lg">
+          <div className="rounded-lg shadow-md overflow-hidden max-w-full">
+            <div className="overflow-x-auto w-full">
+              <table className="w-full text-sm">
                 <thead>
                   <tr className="bg-yellow-500">
-                    <th className="px-6 py-4 text-left font-semibold uppercase tracking-wider">
-                      <button onClick={() => requestSort('date')} className="flex items-center gap-2 hover:text-yellow-600">
-                        <Calendar size={18} /> Date
+                    <th className="px-4 py-3 text-left font-semibold uppercase tracking-wider text-xs">
+                      <button onClick={() => requestSort('date')} className="flex items-center gap-1 hover:text-yellow-600">
+                        <Calendar size={14} /> Date
                         {sortConfig?.key === 'date' && (
-                          <ArrowUpDown size={18} className={sortConfig.direction === 'ascending' ? 'rotate-180' : ''} />
+                          <ArrowUpDown size={14} className={sortConfig.direction === 'ascending' ? 'rotate-180' : ''} />
                         )}
                       </button>
                     </th>
-                    <th className="px-6 py-4 text-left font-semibold uppercase tracking-wider">Route</th>
-                    <th className="px-6 py-4 text-left font-semibold uppercase tracking-wider">
-                      <button onClick={() => requestSort('driverName')} className="flex items-center gap-2 hover:text-yellow-600">
+                    <th className="px-4 py-3 text-left font-semibold uppercase tracking-wider text-xs">Route</th>
+                    <th className="px-4 py-3 text-left font-semibold uppercase tracking-wider text-xs">
+                      <button onClick={() => requestSort('driverName')} className="flex items-center gap-1 hover:text-yellow-600">
                         Driver
                         {sortConfig?.key === 'driverName' && (
-                          <ArrowUpDown size={18} className={sortConfig.direction === 'ascending' ? 'rotate-180' : ''} />
+                          <ArrowUpDown size={14} className={sortConfig.direction === 'ascending' ? 'rotate-180' : ''} />
                         )}
                       </button>
                     </th>
-                    <th className="px-6 py-4 text-left font-semibold uppercase tracking-wider">
-                      <button onClick={() => requestSort('amount')} className="flex items-center gap-2 hover:text-yellow-600">
+                    <th className="px-4 py-3 text-left font-semibold uppercase tracking-wider text-xs">
+                      <button onClick={() => requestSort('amount')} className="flex items-center gap-1 hover:text-yellow-600">
                         Amount
                         {sortConfig?.key === 'amount' && (
-                          <ArrowUpDown size={18} className={sortConfig.direction === 'ascending' ? 'rotate-180' : ''} />
+                          <ArrowUpDown size={14} className={sortConfig.direction === 'ascending' ? 'rotate-180' : ''} />
                         )}
                       </button>
                     </th>
-                    <th className="px-6 py-4 text-left font-semibold uppercase tracking-wider">
-                      <button onClick={() => requestSort('status')} className="flex items-center gap-2 hover:text-yellow-600">
+                    <th className="px-4 py-3 text-left font-semibold uppercase tracking-wider text-xs">
+                      <button onClick={() => requestSort('status')} className="flex items-center gap-1 hover:text-yellow-600">
                         Status
                         {sortConfig?.key === 'status' && (
-                          <ArrowUpDown size={18} className={sortConfig.direction === 'ascending' ? 'rotate-180' : ''} />
+                          <ArrowUpDown size={14} className={sortConfig.direction === 'ascending' ? 'rotate-180' : ''} />
                         )}
                       </button>
                     </th>
-                    <th className="px-6 py-4 text-left font-semibold uppercase tracking-wider">Payment</th>
-                    <th className="px-6 py-4 text-left font-semibold uppercase tracking-wider">Rating</th>
-                    <th className="px-6 py-4 text-left font-semibold uppercase tracking-wider">Actions</th>
+                    <th className="px-4 py-3 text-left font-semibold uppercase tracking-wider text-xs">Payment</th>
+                    <th className="px-4 py-3 text-left font-semibold uppercase tracking-wider text-xs">Rating</th>
+                    <th className="px-4 py-3 text-left font-semibold uppercase tracking-wider text-xs">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
                   {filteredRides.map((ride) => (
                     <tr key={ride.id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 font-medium">{ride.date}</td>
-                      <td className="px-6 py-4">
-                        <div className="font-medium">{ride.from}</div>
-                        <div>to</div>
-                        <div className="font-medium">{ride.to}</div>
+                      <td className="px-4 py-3 font-medium">{ride.date}</td>
+                      <td className="px-4 py-3">
+                        <div className="font-medium text-xs">{ride.from}</div>
+                        <div className="text-xs">to</div>
+                        <div className="font-medium text-xs">{ride.to}</div>
                       </td>
-                      <td className="px-6 py-4">{ride.driverName}</td>
-                      <td className="px-6 py-4 font-medium text-yellow-600">{ride.amount}</td>
-                      <td className="px-6 py-4">
-                        <span className={`px-3 py-1 inline-flex font-semibold rounded-full ${
+                      <td className="px-4 py-3">{ride.driverName}</td>
+                      <td className="px-4 py-3 font-medium text-yellow-600">{ride.amount}</td>
+                      <td className="px-4 py-3">
+                        <span className={`px-2 py-1 inline-flex text-xs font-semibold rounded-full ${
                           ride.status === 'completed' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                         }`}>
                           {ride.status.charAt(0).toUpperCase() + ride.status.slice(1)}
                         </span>
                       </td>
-                      <td className="px-6 py-4">{ride.paymentMethod}</td>
-                      <td className="px-6 py-4">
+                      <td className="px-4 py-3">{ride.paymentMethod}</td>
+                      <td className="px-4 py-3">
                         {ride.rating ? (
                           <div className="flex items-center gap-1">
                             {[...Array(5)].map((_, i) => (
                               <Star
                                 key={i}
-                                size={18}
+                                size={14}
                                 className={i < (ride.rating ?? 0) ? "text-yellow-500" : "text-gray-300"}
                                 fill={i < (ride.rating ?? 0) ? "currentColor" : "none"}
                               />
@@ -341,17 +341,17 @@ export default function RideHistoryPage() {
                           <span>N/A</span>
                         )}
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-4 py-3">
                         {ride.status === 'completed' && !ride.feedbackSubmitted && (
                           <button
                             onClick={() => openFeedbackModal(ride)}
-                            className="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition-colors"
+                            className="px-3 py-1.5 bg-yellow-500 text-white text-xs rounded-md hover:bg-yellow-600 transition-colors"
                           >
                             Give Feedback
                           </button>
                         )}
                         {ride.feedbackSubmitted && (
-                          <span className="text-green-600 font-medium">Feedback Submitted</span>
+                          <span className="text-green-600 font-medium text-xs">Feedback Submitted</span>
                         )}
                       </td>
                     </tr>
@@ -361,54 +361,54 @@ export default function RideHistoryPage() {
             </div>
           </div>
         ) : (
-          <div className="rounded-lg shadow-md p-8 text-center text-xl font-medium">
-            <p className="mb-4">No ride history found with the current filters.</p>
+          <div className="rounded-lg shadow-md p-6 text-center text-base font-medium">
+            <p className="mb-3">No ride history found with the current filters.</p>
           </div>
         )}
 
         {/* Feedback Modal */}
         {showFeedbackModal && selectedRide && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg max-w-lg w-full">
-              <h3 className="text-xl font-semibold mb-4">Rate Your Ride</h3>
-              <div className="mb-4">
-                <p className="mb-2">Driver: {selectedRide.driverName}</p>
-                <p className="mb-2">Route: {selectedRide.from} to {selectedRide.to}</p>
+            <div className="bg-white dark:bg-gray-800 p-5 rounded-lg max-w-md w-full">
+              <h3 className="text-lg font-semibold mb-3">Rate Your Ride</h3>
+              <div className="mb-3">
+                <p className="mb-1 text-sm">Driver: {selectedRide.driverName}</p>
+                <p className="mb-1 text-sm">Route: {selectedRide.from} to {selectedRide.to}</p>
               </div>
-              <div className="mb-4">
-                <label className="block mb-2">Rating:</label>
-                <div className="flex gap-2">
+              <div className="mb-3">
+                <label className="block mb-1 text-sm">Rating:</label>
+                <div className="flex gap-1">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <button
                       key={star}
                       onClick={() => setRating(star)}
-                      className={`text-2xl ${star <= rating ? 'text-yellow-500' : 'text-gray-300'}`}
+                      className={`text-xl ${star <= rating ? 'text-yellow-500' : 'text-gray-300'}`}
                     >
                       ★
                     </button>
                   ))}
                 </div>
               </div>
-              <div className="mb-4">
-                <label className="block mb-2">Feedback:</label>
+              <div className="mb-3">
+                <label className="block mb-1 text-sm">Feedback:</label>
                 <textarea
                   value={feedbackText}
                   onChange={(e) => setFeedbackText(e.target.value)}
-                  className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
-                  rows={4}
+                  className="w-full p-2 text-sm border rounded-md dark:bg-gray-700 dark:border-gray-600"
+                  rows={3}
                   placeholder="Share your experience..."
                 />
               </div>
-              <div className="flex justify-end gap-4">
+              <div className="flex justify-end gap-3">
                 <button
                   onClick={() => setShowFeedbackModal(false)}
-                  className="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400"
+                  className="px-3 py-1.5 text-sm bg-gray-300 rounded-md hover:bg-gray-400"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={() => handleFeedbackSubmit(selectedRide)}
-                  className="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600"
+                  className="px-3 py-1.5 text-sm bg-yellow-500 text-white rounded-md hover:bg-yellow-600"
                 >
                   Submit
                 </button>
