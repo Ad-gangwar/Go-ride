@@ -31,8 +31,10 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
-      <body className={`${outfit.className} bg-white text-gray-900 dark:bg-gray-900 dark:text-white transition-colors duration-300`}>
+      <body className={`${outfit.className} bg-white text-gray-900 dark:bg-gray-900 dark:text-white transition-colors duration-300 min-h-screen flex flex-col`}>
         <ErrorBoundary>
           <GoogleMapsProvider>
             <AuthProvider>
@@ -41,7 +43,7 @@ export default function RootLayout({
                   <SelectedCarAmountProvider>
                     <Toaster position="top-center" />
                     <Navbar />
-                    <main className="min-h-[calc(100vh-4rem)]">
+                    <main className="flex-1">
                       {children}
                     </main>
                     <Footer />

@@ -186,7 +186,7 @@ export default function GoogleMapComponent() {
   }
 
   return (
-    <div className="p-5 h-full">
+    <div className="p-5 h-full mt-6">
       <h2 className="text-2xl font-semibold mb-3">Map</h2>
       <div className="rounded-lg overflow-hidden h-[calc(100%-3rem)] relative">
         <GoogleMap

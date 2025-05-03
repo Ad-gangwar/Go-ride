@@ -25,7 +25,7 @@ export default function BookingPage() {
   }
 
   return (
-    <div className="flex flex-col md:flex-row h-[calc(100vh-4rem)]">
+    <div className="flex flex-col md:flex-row  mb-12">
       <div className="w-full md:w-1/2 p-4">
         <Booking />
       </div>
