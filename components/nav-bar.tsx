@@ -42,15 +42,15 @@ export default function Navbar() {
         
         {user ? (
           <div className="flex items-center gap-4">
-            <span className="font-medium text-gray-600 dark:text-gray-400 hidden md:block">
+            <span className="text-xl font-medium text-gray-600 dark:text-gray-400 hidden md:block">
               {user.firstName || user.username}
             </span>
             <button
               onClick={logout}
               className="px-5 py-2.5 font-medium text-white bg-primary-500 hover:bg-primary-600 rounded-lg flex items-center gap-2 transition-colors"
             >
-              <LogOut size={18} />
-              <span className="hidden md:inline">Logout</span>
+              <LogOut size={22} />
+              <span className="hidden md:inline text-xl">Logout</span>
             </button>
           </div>
         ) : (
@@ -59,15 +59,15 @@ export default function Navbar() {
               href="/login"
               className="px-5 py-2.5 font-medium text-primary-500 border border-primary-500 rounded-lg hover:bg-primary-50 dark:hover:bg-gray-700 flex items-center gap-2 transition-colors"
             >
-              <LogIn size={18} />
-              <span className="hidden md:inline">Login</span>
+              <LogIn size={22} />
+              <span className="hidden md:inline text-xl">Login</span>
             </Link>
             <Link
               href="/register"
               className="px-5 py-2.5 font-medium text-white bg-primary-500 rounded-lg hover:bg-primary-600 flex items-center gap-2 transition-colors"
             >
-              <UserPlus size={18} />
-              <span className="hidden md:inline">Register</span>
+              <UserPlus size={22} />
+              <span className="hidden md:inline text-xl">Register</span>
             </Link>
           </div>
         )}

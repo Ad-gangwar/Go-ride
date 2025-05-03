@@ -25,7 +25,15 @@ export default function PaymentPage() {
   const [clientSecret, setClientSecret] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const amount = searchParams.get('amount') || '0.00';
+  // Get amount and validate it
+  const amountParam = searchParams.get('amount');
+  const amount = amountParam && !isNaN(parseFloat(amountParam)) ? amountParam : '0.00';
+  
+  const originalAmountParam = searchParams.get('originalAmount');
+  const originalAmount = originalAmountParam && !isNaN(parseFloat(originalAmountParam)) 
+    ? parseFloat(originalAmountParam).toFixed(2) 
+    : amount;
+    
   const carType = searchParams.get('carType') || 'Selected Car';
   
   // Convert amount to number for the checkout form
@@ -36,7 +44,13 @@ export default function PaymentPage() {
 
   useEffect(() => {
     setIsMounted(true);
-  }, []);
+    
+    // Debug log
+    console.log('Amount param:', amountParam);
+    console.log('Parsed amount:', amount);
+    console.log('Amount value:', amountValue);
+    console.log('INR amount:', inrAmount);
+  }, [amountParam, amount, amountValue, inrAmount]);
 
   const createPaymentIntent = async (amount: number) => {
     setIsLoading(true);
@@ -77,8 +91,8 @@ export default function PaymentPage() {
 
   const handlePaymentClick = () => {
     try {
-      if (!amount || amount === '0.00') {
-        setError('Please select a car and calculate the fare before proceeding to payment.');
+      if (!amountValue || amountValue <= 0) {
+        setError('Invalid fare amount. Please go back and try again.');
         return;
       }
 
@@ -95,12 +109,14 @@ export default function PaymentPage() {
       const newBooking = {
         id: Date.now().toString(),
         amount: inrAmount,
+        originalAmount: originalAmount,
         source,
         destination,
         carType,
         date: new Date().toISOString(),
         distance: directionsData.distance,
-        duration: directionsData.duration
+        duration: directionsData.duration,
+        isSharedRide: parseFloat(originalAmount) > amountValue
       };
 
       // Get existing bookings from localStorage
@@ -144,6 +160,12 @@ export default function PaymentPage() {
           ₹{inrAmount}
         </div>
 
+        {parseFloat(originalAmount) > amountValue && (
+          <div className="mt-2 bg-green-100 p-2 rounded-md text-green-700 text-lg">
+            Ride sharing discount applied!
+          </div>
+        )}
+
         {error && (
           <div className="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
             {error}
@@ -154,8 +176,9 @@ export default function PaymentPage() {
           <>
             <button
               onClick={handlePaymentClick}
-              disabled={!amount || amount === '0.00' || isLoading}
-              className={`mt-8 bg-white text-purple-500 px-8 py-3 rounded-md font-bold transition-colors flex items-center justify-center mx-auto ${!amount || amount === '0.00' || isLoading
+              disabled={amountValue <= 0 || isLoading}
+              className={`mt-8 bg-white text-purple-500 px-8 py-3 rounded-md font-bold transition-colors flex items-center justify-center mx-auto ${
+                amountValue <= 0 || isLoading
                   ? 'opacity-50 cursor-not-allowed' 
                   : 'hover:bg-gray-100'
               }`}

@@ -330,8 +330,8 @@ export default function RideHistoryPage() {
                               <Star
                                 key={i}
                                 size={18}
-                                className={i < ride.rating ? "text-yellow-500" : "text-gray-300"}
-                                fill={i < ride.rating ? "currentColor" : "none"}
+                                className={i < (ride.rating ?? 0) ? "text-yellow-500" : "text-gray-300"}
+                                fill={i < (ride.rating ?? 0) ? "currentColor" : "none"}
                               />
                             ))}
                           </div>
@@ -367,7 +367,7 @@ export default function RideHistoryPage() {
         {/* Feedback Modal */}
         {showFeedbackModal && selectedRide && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg max-w-md w-full">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg max-w-lg w-full">
               <h3 className="text-xl font-semibold mb-4">Rate Your Ride</h3>
               <div className="mb-4">
                 <p className="mb-2">Driver: {selectedRide.driverName}</p>

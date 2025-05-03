@@ -1,12 +1,16 @@
 'use client';
 
-import { useContext, useState, useCallback } from "react";
+import { useContext, useState, useCallback, useEffect } from "react";
 import { Autocomplete } from "@react-google-maps/api";
 import { Loader2 } from "lucide-react";
 import { useGoogleMaps } from "@/context/google-maps-context";
 import { DirectionsDataContext } from "@/context/directions-data-context";
 
-export default function AutocompleteAddress() {
+interface AutocompleteAddressProps {
+  onAddressChange?: (source: string, destination: string) => void;
+}
+
+export default function AutocompleteAddress({ onAddressChange }: AutocompleteAddressProps) {
   const [source, setSource] = useState<string>("");
   const [destination, setDestination] = useState<string>("");
   const [sourceAutocomplete, setSourceAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
@@ -25,6 +29,13 @@ export default function AutocompleteAddress() {
       setDestination(leg.end_address);
     }
   });
+
+  // Notify parent component when addresses change
+  useEffect(() => {
+    if (source && destination && onAddressChange) {
+      onAddressChange(source, destination);
+    }
+  }, [source, destination, onAddressChange]);
 
   const onSourceLoad = (autocomplete: google.maps.places.Autocomplete) => {
     setSourceAutocomplete(autocomplete);
@@ -185,7 +196,7 @@ export default function AutocompleteAddress() {
       )}
       {/* Source Input */}
       <div className="relative">
-        <label className="text-gray-400 text-[17px]" htmlFor="source">
+        <label className="text-gray-400 text-[20px]" htmlFor="source">
           Where From?
         </label>
         <Autocomplete
@@ -196,7 +207,7 @@ export default function AutocompleteAddress() {
             type="text"
             name="source"
             id="source"
-            className="bg-white p-3 border-[1px] w-full rounded-md outline-none focus:border-yellow-300 text-[17px]"
+            className="bg-white p-3 mt-2 border-[1px] w-full rounded-md outline-none focus:border-yellow-300 text-[20px]"
             value={source}
             onChange={(e) => setSource(e.target.value)}
             placeholder="Enter pickup location"
@@ -205,8 +216,8 @@ export default function AutocompleteAddress() {
       </div>
 
       {/* Destination Input */}
-      <div className="relative mt-4">
-        <label className="text-gray-400 text-[17px]" htmlFor="destination">
+      <div className="relative mt-5">
+        <label className="text-gray-400 text-[20px]" htmlFor="destination">
           Where To?
         </label>
         <Autocomplete
@@ -217,7 +228,7 @@ export default function AutocompleteAddress() {
             type="text"
             name="destination"
             id="destination"
-            className="bg-white p-3 border-[1px] w-full rounded-md outline-none focus:border-yellow-300 text-[17px]"
+            className="bg-white p-3 mt-2 border-[1px] w-full rounded-md outline-none focus:border-yellow-300 text-[20px]"
             value={destination}
             onChange={(e) => setDestination(e.target.value)}
             placeholder="Enter drop-off location"

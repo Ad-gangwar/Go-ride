@@ -188,7 +188,7 @@ export default function GoogleMapComponent() {
   return (
     <div className="p-5 h-[calc(100vh-100px)] mb-16">
       <h2 className="text-2xl font-semibold mb-3">Map</h2>
-      <div className="rounded-lg overflow-hidden h-full">
+      <div className="rounded-lg overflow-hidden h-full relative">
         <GoogleMap
           mapContainerStyle={containerStyle}
           center={defaultCenter}
@@ -237,7 +237,10 @@ export default function GoogleMapComponent() {
           {error}
         </div>
       )}
-      <div className="absolute bottom-[-85%] md:bottom-[50px] z-20 md:right-[30px] right-[1.25rem] pl-5 md:pl-0">
+      <div className="absolute bottom-4 right-4 z-20 md:block hidden">
+        <DistanceTime />
+      </div>
+      <div className="md:hidden mt-4">
         <DistanceTime />
       </div>
     </div>
