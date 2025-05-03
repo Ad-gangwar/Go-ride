@@ -99,9 +99,9 @@ export default function ProfilePage() {
 
   if (!user) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center">
-        <p className="mb-4">Please log in to view your profile</p>
-        <Link href="/login" className="px-4 py-2 bg-yellow-50 dark:0 rounded-md">
+      <div className="min-h-[90vh] flex flex-col items-center justify-center">
+        <p className="mb-4 text-2xl">Please log in to view your profile</p>
+        <Link href="/login" className="px-6 py-3 text-xl font-semibold bg-yellow-500 dark:0 rounded-md">
           Go to Login
         </Link>
       </div>
@@ -248,8 +248,8 @@ export default function ProfilePage() {
                                 <Star
                                   key={i}
                                   size={16}
-                                  className={i < ride.rating ? "text-yellow-500" : "text-gray-300"}
-                                  fill={i < ride.rating ? "currentColor" : "none"}
+                                  className={i < (ride.rating ?? 0) ? "text-yellow-500" : "text-gray-300"}
+                                  fill={i < (ride.rating ?? 0) ? "currentColor" : "none"}
                                 />
                               ))}
                             </div>

@@ -213,9 +213,9 @@ export default function RideHistoryPage() {
 
   if (!user) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center text-lg">
-        <p className="mb-4">Please log in to view your ride history</p>
-        <Link href="/login" className="px-4 py-2 bg-yellow-500 rounded-md text-lg font-semibold">
+      <div className="min-h-[90vh] flex flex-col items-center justify-center text-lg">
+        <p className="mb-4 text-2xl">Please log in to view your ride history</p>
+        <Link href="/login" className="px-6 py-3 bg-yellow-500 rounded-md text-xl font-semibold">
           Go to Login
         </Link>
       </div>

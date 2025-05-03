@@ -186,9 +186,9 @@ export default function GoogleMapComponent() {
   }
 
   return (
-    <div className="p-5 h-[calc(100vh-100px)] mb-16">
+    <div className="p-5 h-full">
       <h2 className="text-2xl font-semibold mb-3">Map</h2>
-      <div className="rounded-lg overflow-hidden h-full relative">
+      <div className="rounded-lg overflow-hidden h-[calc(100%-3rem)] relative">
         <GoogleMap
           mapContainerStyle={containerStyle}
           center={defaultCenter}
