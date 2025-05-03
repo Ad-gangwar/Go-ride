@@ -12,25 +12,17 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Check if user is authenticated
-  const user = request.cookies.get('user');
-  if (!user) {
-    return NextResponse.redirect(new URL('/login', request.url));
-  }
-
+  // For protected routes, let the client-side handle authentication
+  // The client-side will redirect to login if needed
   return NextResponse.next();
 }
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - public (public files)
-     */
-    '/((?!api|_next/static|_next/image|favicon.ico|public).*)',
+    // Match all request paths except for the ones starting with:
+    '/booking',
+    '/ride-history',
+    '/profile',
+    '/api/:path*',
   ],
 };
