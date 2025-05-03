@@ -77,10 +77,10 @@ export default function PaymentSuccessPage({
               Go to Home
             </button>
             <button
-              onClick={() => router.push('/history')}
+              onClick={() => router.push('/ride-history')}
               className="w-full bg-gray-100 text-gray-800 py-3 px-4 rounded-lg hover:bg-gray-200 transition-colors font-medium"
             >
-              View Booking History
+              View Ride History
             </button>
           </div>
 

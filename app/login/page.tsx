@@ -20,7 +20,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2">
+    <div className="min-h-[90vh] grid grid-cols-1 lg:grid-cols-2">
       <Toaster position="top-center" />
       
       {/* Left side - Login Form */}
@@ -72,7 +72,7 @@ export default function LoginPage() {
 
       {/* Right side - Car Image */}
       <div className="h-full bg-yellow-400 hidden lg:flex items-center justify-center">
-        <Image src="/4.png" height={700} width={700} alt="Car" priority />
+        <Image src="/4.png" height={900} width={900} alt="Car" priority />
       </div>
     </div>
   );
