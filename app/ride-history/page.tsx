@@ -16,6 +16,8 @@ interface RideHistory {
   rating?: number;
   status: 'completed' | 'cancelled';
   paymentMethod: string;
+  feedback?: string;
+  feedbackSubmitted?: boolean;
 }
 
 export default function RideHistoryPage() {
@@ -28,6 +30,10 @@ export default function RideHistoryPage() {
     direction: 'ascending' | 'descending';
   } | null>(null);
   const [filterStatus, setFilterStatus] = useState<'all' | 'completed' | 'cancelled'>('all');
+  const [selectedRide, setSelectedRide] = useState<RideHistory | null>(null);
+  const [feedbackText, setFeedbackText] = useState('');
+  const [rating, setRating] = useState(0);
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -169,6 +175,34 @@ export default function RideHistoryPage() {
     toast.success('Ride history exported successfully!');
   };
 
+  const handleFeedbackSubmit = (ride: RideHistory) => {
+    const updatedRides = rideHistory.map(r => {
+      if (r.id === ride.id) {
+        return {
+          ...r,
+          rating,
+          feedback: feedbackText,
+          feedbackSubmitted: true
+        };
+      }
+      return r;
+    });
+
+    setRideHistory(updatedRides);
+    localStorage.setItem('rideHistory', JSON.stringify(updatedRides));
+    setShowFeedbackModal(false);
+    setFeedbackText('');
+    setRating(0);
+    toast.success('Feedback submitted successfully!');
+  };
+
+  const openFeedbackModal = (ride: RideHistory) => {
+    setSelectedRide(ride);
+    setRating(ride.rating || 0);
+    setFeedbackText(ride.feedback || '');
+    setShowFeedbackModal(true);
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center text-lg">
@@ -190,7 +224,7 @@ export default function RideHistoryPage() {
 
   return (
     <div className="min-h-screen py-8 px-4 mt-5 md:px-8 text-lg">
-      <div className="max-w-[1400px] mx-auto">
+      <div className="max-w-[1500px] mx-auto">
         <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-6">
           <h1 className="text-4xl font-bold mb-4 md:mb-0">Ride History</h1>
           <div className="flex flex-col md:flex-row gap-4">
@@ -267,6 +301,7 @@ export default function RideHistoryPage() {
                     </th>
                     <th className="px-6 py-4 text-left font-semibold uppercase tracking-wider">Payment</th>
                     <th className="px-6 py-4 text-left font-semibold uppercase tracking-wider">Rating</th>
+                    <th className="px-6 py-4 text-left font-semibold uppercase tracking-wider">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
@@ -304,6 +339,19 @@ export default function RideHistoryPage() {
                           <span>N/A</span>
                         )}
                       </td>
+                      <td className="px-6 py-4">
+                        {ride.status === 'completed' && !ride.feedbackSubmitted && (
+                          <button
+                            onClick={() => openFeedbackModal(ride)}
+                            className="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition-colors"
+                          >
+                            Give Feedback
+                          </button>
+                        )}
+                        {ride.feedbackSubmitted && (
+                          <span className="text-green-600 font-medium">Feedback Submitted</span>
+                        )}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -313,6 +361,57 @@ export default function RideHistoryPage() {
         ) : (
           <div className="rounded-lg shadow-md p-8 text-center text-xl font-medium">
             <p className="mb-4">No ride history found with the current filters.</p>
+          </div>
+        )}
+
+        {/* Feedback Modal */}
+        {showFeedbackModal && selectedRide && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg max-w-md w-full">
+              <h3 className="text-xl font-semibold mb-4">Rate Your Ride</h3>
+              <div className="mb-4">
+                <p className="mb-2">Driver: {selectedRide.driverName}</p>
+                <p className="mb-2">Route: {selectedRide.from} to {selectedRide.to}</p>
+              </div>
+              <div className="mb-4">
+                <label className="block mb-2">Rating:</label>
+                <div className="flex gap-2">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      onClick={() => setRating(star)}
+                      className={`text-2xl ${star <= rating ? 'text-yellow-500' : 'text-gray-300'}`}
+                    >
+                      ★
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="mb-4">
+                <label className="block mb-2">Feedback:</label>
+                <textarea
+                  value={feedbackText}
+                  onChange={(e) => setFeedbackText(e.target.value)}
+                  className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
+                  rows={4}
+                  placeholder="Share your experience..."
+                />
+              </div>
+              <div className="flex justify-end gap-4">
+                <button
+                  onClick={() => setShowFeedbackModal(false)}
+                  className="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => handleFeedbackSubmit(selectedRide)}
+                  className="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600"
+                >
+                  Submit
+                </button>
+              </div>
+            </div>
           </div>
         )}
       </div>
