@@ -14,6 +14,25 @@
   }
 }
 
+/* index.css */
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 1s ease-out forwards;
+}
+
+
 @layer base {
   * {
     @apply box-border;
@@ -56,11 +75,13 @@
   }
 
   /* Force dark text in inputs */
-  input, textarea {
+  input,
+  textarea {
     @apply text-gray-900 dark:text-gray-900;
   }
 
-  input::placeholder, textarea::placeholder {
+  input::placeholder,
+  textarea::placeholder {
     @apply text-gray-500 dark:text-gray-500;
   }
 }

@@ -11,7 +11,7 @@ export default function Navbar() {
 
   return (
     <div className="flex justify-between p-4 px-6 md:px-12 border-b-[1px] shadow-soft dark:shadow-soft-dark dark:border-gray-700 dark:bg-gray-800">
-      <div className="flex gap-6 md:gap-12 items-center">
+      <div className="flex gap-6 md:gap-12 items-center text-xl">
         <Link href="/" className="flex items-center">
           <Image src="/logo.png" alt="logo" width={140} height={70} priority className="" />
         </Link>
@@ -19,19 +19,19 @@ export default function Navbar() {
           <Link href="/">
             <div className="flex items-center hover:bg-gray-100 dark:hover:bg-gray-700 p-2.5 rounded-lg cursor-pointer transition-all">
               <Map size={20} className="mr-2.5 text-primary-500" />
-              <span className="text-base font-medium text-gray-700 dark:text-gray-200">Home</span>
+              <span className="font-medium text-gray-700 dark:text-gray-200">Home</span>
             </div>
           </Link>
           <Link href="/ride-history">
             <div className="flex items-center hover:bg-gray-100 dark:hover:bg-gray-700 p-2.5 rounded-lg cursor-pointer transition-all">
               <Clock size={20} className="mr-2.5 text-primary-500" />
-              <span className="text-base font-medium text-gray-700 dark:text-gray-200">History</span>
+              <span className="font-medium text-gray-700 dark:text-gray-200">History</span>
             </div>
           </Link>
           <Link href="/profile">
             <div className="flex items-center hover:bg-gray-100 dark:hover:bg-gray-700 p-2.5 rounded-lg cursor-pointer transition-all">
               <User size={20} className="mr-2.5 text-primary-500" />
-              <span className="text-base font-medium text-gray-700 dark:text-gray-200">Profile</span>
+              <span className="font-medium text-gray-700 dark:text-gray-200">Profile</span>
             </div>
           </Link>
         </div>
@@ -42,12 +42,12 @@ export default function Navbar() {
         
         {user ? (
           <div className="flex items-center gap-4">
-            <span className="text-base font-medium text-gray-600 dark:text-gray-400 hidden md:block">
+            <span className="font-medium text-gray-600 dark:text-gray-400 hidden md:block">
               {user.firstName || user.username}
             </span>
             <button
               onClick={logout}
-              className="px-5 py-2.5 text-base font-medium text-white bg-primary-500 hover:bg-primary-600 rounded-lg flex items-center gap-2 transition-colors"
+              className="px-5 py-2.5 font-medium text-white bg-primary-500 hover:bg-primary-600 rounded-lg flex items-center gap-2 transition-colors"
             >
               <LogOut size={18} />
               <span className="hidden md:inline">Logout</span>
@@ -57,14 +57,14 @@ export default function Navbar() {
           <div className="flex items-center gap-3">
             <Link
               href="/login"
-              className="px-5 py-2.5 text-base font-medium text-primary-500 border border-primary-500 rounded-lg hover:bg-primary-50 dark:hover:bg-gray-700 flex items-center gap-2 transition-colors"
+              className="px-5 py-2.5 font-medium text-primary-500 border border-primary-500 rounded-lg hover:bg-primary-50 dark:hover:bg-gray-700 flex items-center gap-2 transition-colors"
             >
               <LogIn size={18} />
               <span className="hidden md:inline">Login</span>
             </Link>
             <Link
               href="/register"
-              className="px-5 py-2.5 text-base font-medium text-white bg-primary-500 rounded-lg hover:bg-primary-600 flex items-center gap-2 transition-colors"
+              className="px-5 py-2.5 font-medium text-white bg-primary-500 rounded-lg hover:bg-primary-600 flex items-center gap-2 transition-colors"
             >
               <UserPlus size={18} />
               <span className="hidden md:inline">Register</span>

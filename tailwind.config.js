@@ -9,9 +9,9 @@ module.exports = {
   theme: {
     extend: {
       fontSize: {
-        'xs': ['0.75rem', { lineHeight: '1rem' }],
-        'sm': ['0.875rem', { lineHeight: '1.25rem' }],
-        'base': ['1rem', { lineHeight: '1.5rem' }],
+        'xs': ['0.875rem', { lineHeight: '1.25rem' }],   // increased from 0.75rem
+        'sm': ['1rem', { lineHeight: '1.5rem' }],        // increased from 0.875rem
+        'base': ['1.125rem', { lineHeight: '1.75rem' }], // increased from 1rem
         'lg': ['1.125rem', { lineHeight: '1.75rem' }],
         'xl': ['1.25rem', { lineHeight: '1.75rem' }],
         '2xl': ['1.5rem', { lineHeight: '2rem' }],
@@ -58,7 +58,9 @@ module.exports = {
       boxShadow: {
         'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
         'soft-dark': '0 2px 15px -3px rgba(0, 0, 0, 0.2), 0 10px 20px -2px rgba(0, 0, 0, 0.15)',
-      },
+        'all-lg': '0 0 8px rgba(0, 0, 0, 0.2)',
+				'all-md': '0 0 6px rgba(0, 0, 0, 0.1)',
+      }
     },
   },
   plugins: [],

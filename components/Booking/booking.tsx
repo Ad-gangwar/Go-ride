@@ -20,18 +20,18 @@ export default function Booking() {
 
   return (
     <div className="p-5">
-      <h2 className="text-[20px] font-semibold">Booking</h2>
+      <h2 className="text-[25px] font-semibold mb-3">Booking</h2>
 
       <div
         className="border-[1px] p-5
-        rounded-md"
+        rounded-md shadow-all-md"
       >
         <AutocompleteAddress />
         <Cars />
         <PaymentCards />
         <button
           type="submit"
-          className={`w-full p-1 rounded-md mt-4 ${
+          className={`w-full p-3 rounded-md mt-4 text-xl font-semibold ${
             carAmount ? "bg-yellow-400" : "bg-gray-200 cursor-not-allowed"
           }`}
           disabled={!carAmount}

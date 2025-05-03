@@ -24,7 +24,7 @@ export default function RegisterPage() {
   return (
     <div className="min-h-[94vh] grid grid-cols-1 lg:grid-cols-2">
       <Toaster position="top-center" />
-      
+
       {/* Left side - Register Form */}
       <div className="h-full lg:flex flex-col items-center justify-center px-4">
         <div className="text-center space-y-4 pt-16">
@@ -36,7 +36,7 @@ export default function RegisterPage() {
 
         <form onSubmit={handleSubmit} className="w-full max-w-md mt-8 space-y-6">
           <div>
-            <label htmlFor="username" className="block text-sm font-medium ">
+            <label htmlFor="username" className="block text-lg font-medium ">
               Username
             </label>
             <input
@@ -45,12 +45,12 @@ export default function RegisterPage() {
               required
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500"
+              className="mt-1 block w-full px-3 py-3.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500"
             />
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium">
+            <label htmlFor="email" className="block text-lg font-medium">
               Email
             </label>
             <input
@@ -59,12 +59,12 @@ export default function RegisterPage() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500"
+              className="mt-1 block w-full px-3 py-3.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500"
             />
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium ">
+            <label htmlFor="password" className="block text-lg font-medium ">
               Password
             </label>
             <input
@@ -73,18 +73,18 @@ export default function RegisterPage() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500"
+              className="mt-1 block w-full px-3 py-3.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500"
             />
           </div>
 
           <button
             type="submit"
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+            className="w-full flex justify-center py-4 px-4 border border-transparent rounded-md shadow-sm text-xl font-medium text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
           >
             Sign up
           </button>
 
-          <p className="text-center text-sm">
+          <p className="text-center text-lg">
             Already have an account?{' '}
             <Link href="/login" className="font-medium text-yellow-600 hover:text-yellow-500">
               Sign in
@@ -95,8 +95,11 @@ export default function RegisterPage() {
 
       {/* Right side - Car Image */}
       <div className="h-full bg-yellow-400 hidden lg:flex items-center justify-center">
-        <Image src="/4.png" height={900} width={900} alt="Car" priority />
+        <div className="animate-slide-in-right">
+          <Image src="/4.png" height={900} width={900} alt="Car" priority />
+        </div>
       </div>
+
     </div>
   );
 } 

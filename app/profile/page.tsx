@@ -28,7 +28,7 @@ export default function ProfilePage() {
     address: ''
   });
   const [rideHistory, setRideHistory] = useState<RideHistory[]>([]);
-  
+
   useEffect(() => {
     if (user) {
       setUserData({
@@ -38,7 +38,7 @@ export default function ProfilePage() {
         phone: localStorage.getItem('userPhone') || '',
         address: localStorage.getItem('userAddress') || ''
       });
-      
+
       // Load ride history from localStorage
       const savedRides = localStorage.getItem('rideHistory');
       if (savedRides) {
@@ -80,11 +80,11 @@ export default function ProfilePage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Save to localStorage for persistence
     localStorage.setItem('userPhone', userData.phone);
     localStorage.setItem('userAddress', userData.address);
-    
+
     setIsEditing(false);
     toast.success('Profile updated successfully!');
   };
@@ -110,191 +110,146 @@ export default function ProfilePage() {
 
   // Calculate ride statistics
   const totalRides = rideHistory.length;
-  const totalSpent = rideHistory.reduce((sum, ride) => 
+  const totalSpent = rideHistory.reduce((sum, ride) =>
     sum + parseFloat(ride.amount.replace('$', '')), 0).toFixed(2);
   const averageRating = rideHistory
     .filter(ride => ride.rating)
-    .reduce((sum, ride) => sum + (ride.rating || 0), 0) / 
+    .reduce((sum, ride) => sum + (ride.rating || 0), 0) /
     rideHistory.filter(ride => ride.rating).length || 0;
 
   return (
-    <div className="min-h-screen py-8 px-4 md:px-8">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold mb-6">My Profile</h1>
-        
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div className="min-h-screen py-10 px-6 md:px-10 text-base">
+      <div className="max-w-[1400px] mx-auto">
+        <h1 className="text-4xl font-bold mb-8">My Profile</h1>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 shadow-all-lg p-7 rounded-lg ">
           {/* Profile Card */}
-          <div className="col-span-1 dark:bg-gray-800 p-6 rounded-lg shadow-md">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold text-gray-800">Personal Information</h2>
-              <button 
+          <div className="col-span-1 dark:bg-gray-800 p-8 rounded-lg shadow-all-md">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-semibold">Personal Information</h2>
+              <button
                 onClick={() => setIsEditing(!isEditing)}
                 className="p-2 hover:text-yellow-500"
               >
-                <Edit2 size={18} />
+                <Edit2 size={20} />
               </button>
             </div>
-            
-            <div className="mb-6 flex justify-center">
+
+            <div className="mb-8 flex justify-center">
               {user.image ? (
-                <Image 
-                  src={user.image} 
-                  alt="Profile" 
-                  width={100} 
-                  height={100} 
+                <Image
+                  src={user.image}
+                  alt="Profile"
+                  width={100}
+                  height={100}
                   className="rounded-full"
                 />
               ) : (
-                <div className="w-24 h-24 dark:bg-gray-700 rounded-full flex items-center justify-center">
-                  <User size={40} className="text-yellow-500" />
+                <div className="w-28 h-28 dark:bg-gray-700 rounded-full flex items-center justify-center">
+                  <User size={44} className="text-yellow-500" />
                 </div>
               )}
             </div>
-            
+
             {isEditing ? (
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium">First Name</label>
-                  <input
-                    type="text"
-                    name="firstName"
-                    value={userData.firstName}
-                    onChange={handleInputChange}
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium">Last Name</label>
-                  <input
-                    type="text"
-                    name="lastName"
-                    value={userData.lastName}
-                    onChange={handleInputChange}
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium">Email</label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={userData.email}
-                    onChange={handleInputChange}
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500"
-                    disabled
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium">Phone</label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={userData.phone}
-                    onChange={handleInputChange}
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium">Address</label>
-                  <input
-                    type="text"
-                    name="address"
-                    value={userData.address}
-                    onChange={handleInputChange}
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500"
-                  />
-                </div>
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {/* All form fields */}
+                {['firstName', 'lastName', 'email', 'phone', 'address'].map(field => (
+                  <div key={field}>
+                    <label className="block text-base font-medium capitalize">{field.replace(/([A-Z])/g, ' $1')}</label>
+                    <input
+                      type={field === 'email' ? 'email' : field === 'phone' ? 'tel' : 'text'}
+                      name={field}
+                      value={(userData as any)[field]}
+                      onChange={handleInputChange}
+                      disabled={field === 'email'}
+                      className="mt-2 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-all-md focus:outline-none focus:ring-yellow-500 focus:border-yellow-500"
+                    />
+                  </div>
+                ))}
                 <button
                   type="submit"
-                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium bg-yellow-50 dark:0 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+                  className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-all-md text-lg font-medium bg-yellow-50 dark:0 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
                 >
                   Save Changes
                 </button>
               </form>
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-6">
                 <div>
-                  <p className="text-sm">Username</p>
-                  <p className="font-medium">{user.username}</p>
+                  <p className="text-base text-gray-500">Username</p>
+                  <p className="font-medium text-lg">{user.username}</p>
                 </div>
                 <div>
-                  <p className="text-sm">Name</p>
-                  <p className="font-medium">{userData.firstName} {userData.lastName}</p>
+                  <p className="text-base text-gray-500">Name</p>
+                  <p className="font-medium text-lg">{userData.firstName} {userData.lastName}</p>
                 </div>
                 <div>
-                  <p className="text-sm">Email</p>
-                  <p className="font-medium">{userData.email}</p>
+                  <p className="text-base text-gray-500">Email</p>
+                  <p className="font-medium text-lg">{userData.email}</p>
                 </div>
                 <div>
-                  <p className="text-sm">Phone</p>
-                  <p className="font-medium">{userData.phone || 'Not provided'}</p>
+                  <p className="text-base text-gray-500">Phone</p>
+                  <p className="font-medium text-lg">{userData.phone || 'Not provided'}</p>
                 </div>
                 <div>
-                  <p className="text-sm">Address</p>
-                  <p className="font-medium">{userData.address || 'Not provided'}</p>
+                  <p className="text-base text-gray-500">Address</p>
+                  <p className="font-medium text-lg">{userData.address || 'Not provided'}</p>
                 </div>
               </div>
             )}
           </div>
-          
+
           {/* Statistics & Recent Rides */}
-          <div className="col-span-1 lg:col-span-2 space-y-6">
+          <div className="col-span-1 lg:col-span-2 space-y-10">
             {/* Statistics */}
-            <div className="p-6 rounded-lg shadow-md">
-              <h2 className="text-xl font-semibold mb-4">Ride Statistics</h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="bg-yellow-50 dark:bg-gray-800 p-4 rounded-lg">
-                  <div className="flex items-center mb-2">
-                    <MapPin className="text-yellow-500 mr-2" size={18} />
-                    <h3 className="font-medium">Total Rides</h3>
+            <div className="p-8 rounded-lg shadow-all-md">
+              <h2 className="text-2xl font-semibold mb-6">Ride Statistics</h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {[
+                  { icon: MapPin, label: 'Total Rides', value: totalRides },
+                  { icon: Star, label: 'Average Rating', value: averageRating.toFixed(1) },
+                  { icon: Clock, label: 'Total Spent', value: `$${totalSpent}` },
+                ].map(({ icon: Icon, label, value }) => (
+                  <div key={label} className="bg-yellow-50 dark:bg-gray-800 p-6 rounded-lg">
+                    <div className="flex items-center mb-3">
+                      <Icon className="text-yellow-500 mr-2" size={20} />
+                      <h3 className="font-medium text-lg">{label}</h3>
+                    </div>
+                    <p className="text-3xl font-bold text-yellow-500">{value}</p>
                   </div>
-                  <p className="text-2xl font-bold text-yellow-500">{totalRides}</p>
-                </div>
-                <div className="bg-yellow-50  dark:bg-gray-800 p-4 rounded-lg">
-                  <div className="flex items-center mb-2">
-                    <Star className="text-yellow-500 mr-2" size={18} />
-                    <h3 className="font-medium">Average Rating</h3>
-                  </div>
-                  <p className="text-2xl font-bold text-yellow-500">{averageRating.toFixed(1)}</p>
-                </div>
-                <div className="bg-yellow-50 dark:bg-gray-800 p-4 rounded-lg">
-                  <div className="flex items-center mb-2">
-                    <Clock className="text-yellow-500 mr-2" size={18} />
-                    <h3 className="font-medium">Total Spent</h3>
-                  </div>
-                  <p className="text-2xl font-bold text-yellow-500">${totalSpent}</p>
-                </div>
+                ))}
               </div>
             </div>
-            
+
             {/* Recent Rides */}
-            <div className="p-6 rounded-lg shadow-md">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-semibold">Recent Rides</h2>
-                <Link href="/ride-history" className="text-yellow-500 hover:underline text-sm font-medium">
+            <div className="p-8 rounded-lg shadow-all-md">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-semibold">Recent Rides</h2>
+                <Link href="/ride-history" className="text-yellow-500 hover:underline text-base font-medium">
                   View All
                 </Link>
               </div>
-              
+
               {rideHistory.length > 0 ? (
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {rideHistory.slice(0, 3).map(ride => (
-                    <div key={ride.id} className="border-b pb-3 last:border-b-0">
+                    <div key={ride.id} className="border-b pb-4 last:border-b-0">
                       <div className="flex justify-between">
                         <div>
-                          <p className="font-medium">{ride.from} to {ride.to}</p>
-                          <p className="text-sm">{ride.date} • Driver: {ride.driverName}</p>
+                          <p className="font-medium text-lg">{ride.from} to {ride.to}</p>
+                          <p className="text-base text-gray-600">{ride.date} • Driver: {ride.driverName}</p>
                         </div>
                         <div className="text-right">
-                          <p className="font-bold text-yellow-500">{ride.amount}</p>
+                          <p className="font-bold text-yellow-500 text-lg">{ride.amount}</p>
                           {ride.rating && (
-                            <div className="flex items-center justify-end">
+                            <div className="flex items-center justify-end mt-1">
                               {[...Array(5)].map((_, i) => (
-                                <Star 
-                                  key={i} 
-                                  size={14} 
-                                  className={i < ride.rating! ? "text-yellow-500" : "text-gray-300"} 
-                                  fill={i < ride.rating! ? "currentColor" : "none"}
+                                <Star
+                                  key={i}
+                                  size={16}
+                                  className={i < ride.rating ? "text-yellow-500" : "text-gray-300"}
+                                  fill={i < ride.rating ? "currentColor" : "none"}
                                 />
                               ))}
                             </div>
@@ -305,7 +260,7 @@ export default function ProfilePage() {
                   ))}
                 </div>
               ) : (
-                <p className= "text-center py-4">No ride history available</p>
+                <p className="text-center py-6 text-base">No ride history available</p>
               )}
             </div>
           </div>
@@ -313,4 +268,4 @@ export default function ProfilePage() {
       </div>
     </div>
   );
-} 
+}

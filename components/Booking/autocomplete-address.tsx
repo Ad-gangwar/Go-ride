@@ -185,7 +185,7 @@ export default function AutocompleteAddress() {
       )}
       {/* Source Input */}
       <div className="relative">
-        <label className="text-gray-400 text-[13px]" htmlFor="source">
+        <label className="text-gray-400 text-[17px]" htmlFor="source">
           Where From?
         </label>
         <Autocomplete
@@ -196,7 +196,7 @@ export default function AutocompleteAddress() {
             type="text"
             name="source"
             id="source"
-            className="bg-white p-1 border-[1px] w-full rounded-md outline-none focus:border-yellow-300 text-[14px]"
+            className="bg-white p-3 border-[1px] w-full rounded-md outline-none focus:border-yellow-300 text-[17px]"
             value={source}
             onChange={(e) => setSource(e.target.value)}
             placeholder="Enter pickup location"
@@ -206,7 +206,7 @@ export default function AutocompleteAddress() {
 
       {/* Destination Input */}
       <div className="relative mt-4">
-        <label className="text-gray-400 text-[13px]" htmlFor="destination">
+        <label className="text-gray-400 text-[17px]" htmlFor="destination">
           Where To?
         </label>
         <Autocomplete
@@ -217,7 +217,7 @@ export default function AutocompleteAddress() {
             type="text"
             name="destination"
             id="destination"
-            className="bg-white p-1 border-[1px] w-full rounded-md outline-none focus:border-yellow-300 text-[14px]"
+            className="bg-white p-3 border-[1px] w-full rounded-md outline-none focus:border-yellow-300 text-[17px]"
             value={destination}
             onChange={(e) => setDestination(e.target.value)}
             placeholder="Enter drop-off location"

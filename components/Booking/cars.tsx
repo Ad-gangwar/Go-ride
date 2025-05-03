@@ -67,7 +67,7 @@ export default function Cars() {
   if (!directionsData) {
     return (
       <div className="my-3">
-        <h2 className="font-medium text-[14px]">Select Car</h2>
+        <h2 className="font-medium text-[17px]">Select Car</h2>
         <div className="p-4 bg-yellow-50 border border-yellow-200 rounded">
           <p className="text-yellow-700 text-sm">Please select source and destination points to view available cars.</p>
         </div>
@@ -77,8 +77,8 @@ export default function Cars() {
 
   return (
     <div className="mt-3">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="font-medium text-[14px]">Select Car</h2>
+      <div className="flex justify-between items-center mb-2">
+        <h2 className="font-medium text-[17px]">Select Car</h2>
         {selectedCar && (
           <div className="text-sm font-medium text-gray-600">
             Total Amount: <span className="text-green-600">${calculateCost(CarsList.find(c => c.id === selectedCar)?.charges || 0).cost}</span>
